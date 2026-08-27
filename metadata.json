@@ -1,0 +1,6 @@
+{
+  "name": "Chafique Property Agency",
+  "description": "Production-ready real estate platform for Chafique Property Agency featuring properties for sale and rent in Kigali Rwanda, live Firebase database, inquiries, viewing reservations, and admin control portal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Properties: Public can read, create, update, delete
+    match /properties/{propertyId} {
+      allow read, write: if true;
+    }
+
+    // Inquiries: Public can read, create, update, delete
+    match /inquiries/{inquiryId} {
+      allow read, write: if true;
+    }
+
+    // Reservations: Public can read, create, update, delete
+    match /reservations/{reservationId} {
+      allow read, write: if true;
+    }
+
+    // Notifications: Public can read, create, update, delete
+    match /notifications/{notificationId} {
+      allow read, write: if true;
+    }
+
+    // Agency Settings: Public can read and update
+    match /settings/{docId} {
+      allow read, write: if true;
+    }
+
+    // User profiles & Roles
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // Favorites
+    match /favorites/{favoriteId} {
+      allow read, write: if true;
+    }
+  }
+}
+

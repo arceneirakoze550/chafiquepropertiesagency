@@ -1,0 +1,111 @@
+{
+  "$schema": "https://firebase.google.com/schemas/firestore-blueprint.json",
+  "version": "1.0",
+  "entities": {
+    "User": {
+      "collection": "users",
+      "fields": {
+        "uid": { "type": "string", "required": true },
+        "name": { "type": "string", "required": true },
+        "email": { "type": "string", "required": true },
+        "phone": { "type": "string", "required": false },
+        "role": { "type": "string", "required": true, "enum": ["admin", "client"] },
+        "active": { "type": "boolean", "required": true },
+        "createdAt": { "type": "string", "required": true },
+        "updatedAt": { "type": "string", "required": true }
+      }
+    },
+    "Property": {
+      "collection": "properties",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "title": { "type": "string", "required": true },
+        "slug": { "type": "string", "required": true },
+        "description": { "type": "string", "required": true },
+        "price": { "type": "number", "required": true },
+        "currency": { "type": "string", "required": true },
+        "listingType": { "type": "string", "required": true, "enum": ["sale", "rent"] },
+        "propertyType": { "type": "string", "required": true, "enum": ["house", "apartment", "villa", "land", "commercial"] },
+        "status": { "type": "string", "required": true, "enum": ["available", "reserved", "sold", "rented", "inactive"] },
+        "country": { "type": "string", "required": true },
+        "city": { "type": "string", "required": true },
+        "district": { "type": "string", "required": true },
+        "sector": { "type": "string", "required": false },
+        "cell": { "type": "string", "required": false },
+        "village": { "type": "string", "required": false },
+        "address": { "type": "string", "required": true },
+        "latitude": { "type": "number", "required": false },
+        "longitude": { "type": "number", "required": false },
+        "bedrooms": { "type": "number", "required": false },
+        "bathrooms": { "type": "number", "required": false },
+        "toilets": { "type": "number", "required": false },
+        "size": { "type": "number", "required": false },
+        "landSize": { "type": "number", "required": false },
+        "parkingSpaces": { "type": "number", "required": false },
+        "yearBuilt": { "type": "number", "required": false },
+        "amenities": { "type": "array", "required": false },
+        "images": { "type": "array", "required": true },
+        "featured": { "type": "boolean", "required": false },
+        "createdBy": { "type": "string", "required": false },
+        "createdAt": { "type": "string", "required": true },
+        "updatedAt": { "type": "string", "required": true }
+      }
+    },
+    "Inquiry": {
+      "collection": "inquiries",
+      "fields": {
+        "propertyId": { "type": "string", "required": false },
+        "propertyTitle": { "type": "string", "required": false },
+        "clientName": { "type": "string", "required": true },
+        "phone": { "type": "string", "required": true },
+        "email": { "type": "string", "required": true },
+        "message": { "type": "string", "required": true },
+        "type": { "type": "string", "required": true, "enum": ["inquiry", "viewing", "purchase_request", "rental_request"] },
+        "status": { "type": "string", "required": true, "enum": ["new", "contacted", "viewing", "negotiating", "completed", "cancelled"] },
+        "createdAt": { "type": "string", "required": true },
+        "updatedAt": { "type": "string", "required": true }
+      }
+    },
+    "Reservation": {
+      "collection": "reservations",
+      "fields": {
+        "propertyId": { "type": "string", "required": true },
+        "propertyTitle": { "type": "string", "required": true },
+        "clientName": { "type": "string", "required": true },
+        "phone": { "type": "string", "required": true },
+        "email": { "type": "string", "required": true },
+        "status": { "type": "string", "required": true, "enum": ["pending", "approved", "rejected", "cancelled", "completed"] },
+        "notes": { "type": "string", "required": false },
+        "tourType": { "type": "string", "required": true, "enum": ["in-person", "video-call"] },
+        "date": { "type": "string", "required": true },
+        "timeSlot": { "type": "string", "required": true },
+        "createdAt": { "type": "string", "required": true },
+        "updatedAt": { "type": "string", "required": true }
+      }
+    },
+    "Notification": {
+      "collection": "notifications",
+      "fields": {
+        "type": { "type": "string", "required": true },
+        "title": { "type": "string", "required": true },
+        "message": { "type": "string", "required": true },
+        "relatedId": { "type": "string", "required": false },
+        "read": { "type": "boolean", "required": true },
+        "createdAt": { "type": "string", "required": true }
+      }
+    },
+    "Settings": {
+      "collection": "settings",
+      "fields": {
+        "companyName": { "type": "string", "required": true },
+        "companyTagline": { "type": "string", "required": false },
+        "whatsappNumber": { "type": "string", "required": true },
+        "email": { "type": "string", "required": true },
+        "phone": { "type": "string", "required": true },
+        "currency": { "type": "string", "required": true },
+        "city": { "type": "string", "required": true },
+        "country": { "type": "string", "required": true }
+      }
+    }
+  }
+}

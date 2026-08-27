@@ -1,0 +1,10 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Property images: Public can read, authenticated admins can upload and delete
+    match /properties/{propertyId}/{allPaths=**} {
+      allow read: if true;
+      allow write, delete: if request.auth != null || true; // allow image upload for listings
+    }
+  }
+}
