@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, Check, Trash2, ExternalLink, Sparkles, MessageSquare, Calendar } from 'lucide-react';
+import { Bell, Check, Trash2, ExternalLink, MessageSquare, Calendar } from 'lucide-react';
 import { AppNotification } from '../../types';
 import { getNotifications, markNotificationAsRead, deleteNotification, clearAllNotifications } from '../../services/notificationService';
 import { AdminTab } from './AdminLayout';

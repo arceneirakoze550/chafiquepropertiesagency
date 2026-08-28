@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Bed, Bath, Maximize2, MapPin, Heart, MessageCircle, ChevronLeft, ChevronRight, Sparkles, ArrowRight } from 'lucide-react';
+import { Bed, Bath, Maximize2, MapPin, MessageCircle, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { Property, SiteSettings } from '../../types';
-import { useFavorites } from '../../context/FavoritesContext';
 import { formatPrice } from '../../lib/seo';
 import { getPropertyWhatsAppUrl, openWhatsApp } from '../../lib/whatsapp';
 
@@ -18,9 +17,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   onSelectProperty,
   layout = 'grid',
 }) => {
-  const { isFavorite, toggleFavorite } = useFavorites();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const favorite = isFavorite(property.id);
 
   const images = property.images && property.images.length > 0
     ? property.images
@@ -84,24 +81,11 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
               {isRent ? 'For Rent' : 'For Sale'}
             </span>
             {property.featured && (
-              <span className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md bg-amber-500 text-white shadow-xs flex items-center gap-1">
-                <Sparkles className="w-3 h-3" /> Featured
+              <span className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md bg-amber-500 text-white shadow-xs">
+                Featured
               </span>
             )}
           </div>
-
-          {/* Favorite button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleFavorite(property);
-            }}
-            className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-xs text-slate-700 hover:text-rose-600 rounded-full shadow-md transition-colors z-10 cursor-pointer"
-            title={favorite ? 'Remove from Saved' : 'Save to Favorites'}
-          >
-            <Heart className={`w-4 h-4 ${favorite ? 'text-rose-500 fill-rose-500' : ''}`} />
-          </button>
         </div>
 
         {/* Content */}
@@ -197,8 +181,8 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
             {isRent ? 'For Rent' : 'For Sale'}
           </span>
           {property.featured && (
-            <span className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md bg-amber-500 text-white shadow-xs flex items-center gap-1">
-              <Sparkles className="w-3 h-3" /> Featured
+            <span className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md bg-amber-500 text-white shadow-xs">
+              Featured
             </span>
           )}
         </div>
@@ -222,19 +206,6 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
             </button>
           </div>
         )}
-
-        {/* Favorite Bookmark Button */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleFavorite(property);
-          }}
-          className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-xs text-slate-700 hover:text-rose-600 rounded-full shadow-md transition-colors z-10 cursor-pointer"
-          title={favorite ? 'Remove from Saved' : 'Save to Favorites'}
-        >
-          <Heart className={`w-4 h-4 ${favorite ? 'text-rose-500 fill-rose-500' : ''}`} />
-        </button>
 
         {/* Image counter dots */}
         {images.length > 1 && (

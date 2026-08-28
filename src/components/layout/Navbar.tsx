@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { Building2, Heart, Shield, Menu, X, Phone, MessageCircle, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { Building2, Shield, Menu, X, Phone, MessageCircle, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { useFavorites } from '../../context/FavoritesContext';
 import { SiteSettings } from '../../types';
-import { FirebaseStatusBanner } from '../common/FirebaseStatusBanner';
 import { BrandLogo } from '../common/BrandLogo';
 import { getGeneralWhatsAppUrl, openWhatsApp } from '../../lib/whatsapp';
 
@@ -21,7 +19,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenAuth,
 }) => {
   const { user, isAdmin, logout } = useAuth();
-  const { favoritesCount } = useFavorites();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNav = (view: string, data?: any) => {
@@ -40,11 +37,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
-      {/* Top micro bar with Firebase status and Direct Contact */}
+      {/* Top micro bar with Direct Contact & Location */}
       <div className="bg-slate-900 text-slate-300 text-[11px] py-1 px-4 sm:px-8 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <FirebaseStatusBanner />
-          <span className="hidden md:inline text-slate-400 font-medium">
+          <span className="text-slate-300 font-medium flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
             Kigali, Rwanda • Verified Real Estate Brokerage
           </span>
         </div>
@@ -135,21 +132,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          {/* Right actions: Favorites + Auth Controls */}
+          {/* Right actions: Auth Controls */}
           <div className="hidden md:flex items-center gap-2.5">
-            <button
-              onClick={() => handleNav('favorites')}
-              className="relative p-2.5 text-slate-600 hover:text-rose-600 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer"
-              title="Saved Properties"
-            >
-              <Heart className={`w-5 h-5 ${favoritesCount > 0 ? 'text-rose-500 fill-rose-500' : ''}`} />
-              {favoritesCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                  {favoritesCount}
-                </span>
-              )}
-            </button>
-
             {user ? (
               <div className="flex items-center gap-2">
                 {isAdmin ? (
@@ -199,17 +183,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Mobile menu toggle */}
           <div className="flex md:hidden items-center gap-2">
-            <button
-              onClick={() => handleNav('favorites')}
-              className="relative p-2 text-slate-600"
-            >
-              <Heart className={`w-5 h-5 ${favoritesCount > 0 ? 'text-rose-500 fill-rose-500' : ''}`} />
-              {favoritesCount > 0 && (
-                <span className="absolute 0 top-0 right-0 w-4 h-4 bg-rose-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                  {favoritesCount}
-                </span>
-              )}
-            </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 text-slate-700 hover:text-slate-900 cursor-pointer"

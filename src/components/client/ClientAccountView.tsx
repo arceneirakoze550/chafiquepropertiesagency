@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
   User, 
-  Heart, 
   MessageSquare, 
   Calendar, 
   ShieldCheck, 
@@ -19,7 +18,6 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { useFavorites } from '../../context/FavoritesContext';
 import { Property, Inquiry, Reservation, SiteSettings } from '../../types';
 import { getInquiries } from '../../services/inquiryService';
 import { getReservations } from '../../services/reservationService';
@@ -32,7 +30,7 @@ interface ClientAccountViewProps {
   onExploreProperties: () => void;
 }
 
-type AccountTab = 'favorites' | 'inquiries' | 'viewings' | 'profile';
+type AccountTab = 'inquiries' | 'viewings' | 'profile';
 
 export const ClientAccountView: React.FC<ClientAccountViewProps> = ({
   settings,
@@ -40,9 +38,8 @@ export const ClientAccountView: React.FC<ClientAccountViewProps> = ({
   onExploreProperties,
 }) => {
   const { user, logout, isAdmin } = useAuth();
-  const { favoriteProperties, toggleFavorite } = useFavorites();
   
-  const [activeTab, setActiveTab] = useState<AccountTab>('favorites');
+  const [activeTab, setActiveTab] = useState<AccountTab>('inquiries');
   const [userInquiries, setUserInquiries] = useState<Inquiry[]>([]);
   const [userReservations, setUserReservations] = useState<Reservation[]>([]);
   const [loadingData, setLoadingData] = useState(true);
@@ -177,21 +174,6 @@ export const ClientAccountView: React.FC<ClientAccountViewProps> = ({
       {/* Account Navigation Tabs */}
       <div className="border-b border-slate-200 flex items-center gap-2 sm:gap-4 overflow-x-auto pb-px">
         <button
-          onClick={() => setActiveTab('favorites')}
-          className={`flex items-center gap-2 py-3 px-4 text-xs font-bold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
-            activeTab === 'favorites'
-              ? 'border-emerald-600 text-emerald-700'
-              : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
-          }`}
-        >
-          <Heart className="w-4 h-4" />
-          <span>Saved Favorites</span>
-          <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700 font-bold">
-            {favoriteProperties.length}
-          </span>
-        </button>
-
-        <button
           onClick={() => setActiveTab('inquiries')}
           className={`flex items-center gap-2 py-3 px-4 text-xs font-bold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
             activeTab === 'inquiries'
@@ -234,103 +216,7 @@ export const ClientAccountView: React.FC<ClientAccountViewProps> = ({
         </button>
       </div>
 
-      {/* Tab 1: Saved Favorites */}
-      {activeTab === 'favorites' && (
-        <div className="space-y-6">
-          {favoriteProperties.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-4">
-              <div className="w-14 h-14 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mx-auto">
-                <Heart className="w-7 h-7" />
-              </div>
-              <div>
-                <h3 className="text-base font-bold text-slate-900">No Saved Properties Yet</h3>
-                <p className="text-xs text-slate-500 max-w-md mx-auto mt-1">
-                  Explore Kigali luxury houses, modern apartments, and titled plots for sale or rent, and click the heart icon to save them here.
-                </p>
-              </div>
-              <button
-                onClick={onExploreProperties}
-                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl inline-flex items-center gap-2 transition-colors cursor-pointer"
-              >
-                <span>Browse Kigali Listings</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {favoriteProperties.map((property) => {
-                const coverImage = property.images?.find((img) => img.isCover)?.url || property.images?.[0]?.url || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80';
-                return (
-                  <div 
-                    key={property.id}
-                    className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
-                  >
-                    <div className="relative h-48 bg-slate-100 overflow-hidden">
-                      <img
-                        src={coverImage}
-                        alt={property.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-                        {property.listingType === 'rent' ? 'For Rent' : 'For Sale'}
-                      </div>
-                      <button
-                        onClick={() => toggleFavorite(property)}
-                        className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white text-rose-500 rounded-full shadow-md transition-colors cursor-pointer"
-                        title="Remove from favorites"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-
-                    <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                          <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span className="truncate">
-                            {property.location?.sector || 'Prime Sector'}, {property.location?.district || 'Kigali'}
-                          </span>
-                        </div>
-                        <h4 className="text-sm font-bold text-slate-900 line-clamp-1 group-hover:text-emerald-700 transition-colors">
-                          {property.title}
-                        </h4>
-                        <div className="text-base font-extrabold text-emerald-700">
-                          {formatPrice(property.price, property.currency, settings.currencySymbol)}
-                          {property.listingType === 'rent' && <span className="text-xs font-normal text-slate-500">/mo</span>}
-                        </div>
-                      </div>
-
-                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-xs text-slate-600 font-medium">
-                          <span className="flex items-center gap-1">
-                            <BedDouble className="w-3.5 h-3.5 text-slate-400" />
-                            {property.bedrooms || 0}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Bath className="w-3.5 h-3.5 text-slate-400" />
-                            {property.bathrooms || 0}
-                          </span>
-                        </div>
-
-                        <button
-                          onClick={() => onSelectProperty(property)}
-                          className="px-3.5 py-1.5 bg-slate-900 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
-                        >
-                          <span>View Details</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Tab 2: My Inquiries */}
+      {/* Tab: My Inquiries */}
       {activeTab === 'inquiries' && (
         <div className="space-y-4">
           {userInquiries.length === 0 ? (

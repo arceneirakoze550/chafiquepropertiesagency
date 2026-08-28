@@ -16,7 +16,6 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { getNotifications, markNotificationAsRead } from '../../services/notificationService';
 import { AppNotification, SiteSettings } from '../../types';
-import { FirebaseStatusBanner } from '../common/FirebaseStatusBanner';
 import { BrandLogo } from '../common/BrandLogo';
 
 export type AdminTab = 'dashboard' | 'properties' | 'new-property' | 'inquiries' | 'reservations' | 'notifications' | 'settings';
@@ -210,8 +209,6 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
           </div>
 
           <div className="flex items-center gap-4">
-            <FirebaseStatusBanner />
-
             {/* Notification Bell */}
             <div className="relative">
               <button

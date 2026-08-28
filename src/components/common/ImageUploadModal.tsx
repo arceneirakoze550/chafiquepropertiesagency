@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, X, CheckCircle2, AlertCircle, RefreshCw, Star, Image as ImageIcon, Trash2, Sparkles, Cloud } from 'lucide-react';
+import { Upload, X, CheckCircle2, AlertCircle, RefreshCw, Star, Image as ImageIcon, Trash2, Cloud } from 'lucide-react';
 import { PropertyImage, UploadProgressItem } from '../../types';
 import { uploadPropertyImage, validateImageFile } from '../../services/storageService';
 import { getOptimizedImageUrl } from '../../lib/cloudinary';

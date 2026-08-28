@@ -5,7 +5,6 @@ import {
   Upload,
   Image as ImageIcon,
   CheckCircle,
-  Sparkles,
   MapPin,
   Trash2,
   Star
@@ -555,20 +554,6 @@ export const AdminPropertyForm: React.FC<AdminPropertyFormProps> = ({
                 <option value="no">Unfurnished</option>
                 <option value="yes">Furnished</option>
               </select>
-            </div>
-
-            <div className="sm:col-span-2 flex items-center gap-6 pt-5">
-              <label className="flex items-center gap-2 text-xs font-semibold text-slate-800 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={featured}
-                  onChange={(e) => setFeatured(e.target.checked)}
-                  className="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4"
-                />
-                <span className="flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Featured on Homepage Spotlight
-                </span>
-              </label>
             </div>
           </div>
         </div>

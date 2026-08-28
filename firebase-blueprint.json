@@ -45,6 +45,8 @@
         "yearBuilt": { "type": "number", "required": false },
         "amenities": { "type": "array", "required": false },
         "images": { "type": "array", "required": true },
+        "videoUrl": { "type": "string", "required": false },
+        "virtualTourUrl": { "type": "string", "required": false },
         "featured": { "type": "boolean", "required": false },
         "createdBy": { "type": "string", "required": false },
         "createdAt": { "type": "string", "required": true },

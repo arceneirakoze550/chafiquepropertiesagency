@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Lock, Mail, Key, X, AlertCircle, Sparkles, Database } from 'lucide-react';
+import { Shield, Lock, Mail, Key, X, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { isFirebaseConfigured } from '../../lib/firebase';
 
@@ -125,7 +125,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
               onClick={handleQuickDemo}
               className="w-full py-2.5 px-4 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
-              <Sparkles className="w-4 h-4 text-amber-500" />
+              <Key className="w-4 h-4 text-emerald-600" />
               <span>Instant Principal Broker Login (1-Click)</span>
             </button>
             <p className="text-[11px] text-slate-400 text-center">

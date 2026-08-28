@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Save, CheckCircle, RotateCcw, Building2, Phone, Mail, MapPin, Globe, MessageCircle, Sparkles } from 'lucide-react';
+import { Settings, Save, CheckCircle, RotateCcw, Building2, Phone, Mail, MapPin, Globe, MessageCircle } from 'lucide-react';
 import { SiteSettings } from '../../types';
 import { updateSiteSettings, DEFAULT_SETTINGS } from '../../services/settingsService';
 
@@ -192,7 +192,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ settings, onUpdate
         {/* Card 2: Homepage Hero & Marketing Headlines */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-2xs">
           <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-            <Sparkles className="w-4 h-4 text-amber-500" />
+            <Globe className="w-4 h-4 text-emerald-600" />
             <h2 className="text-sm font-bold text-slate-900">Homepage Hero & Marketing Copy</h2>
           </div>
 

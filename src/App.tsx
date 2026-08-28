@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { FavoritesProvider } from './context/FavoritesContext';
 import { Property, FilterParams, SiteSettings, Inquiry, Reservation } from './types';
 import { subscribeToProperties, getProperties } from './services/propertyService';
 import { subscribeToInquiries, getInquiries } from './services/inquiryService';
@@ -23,7 +22,6 @@ import { NeighborhoodSpotlight } from './components/public/NeighborhoodSpotlight
 import { WhyChooseUs } from './components/public/WhyChooseUs';
 import { TestimonialsSection } from './components/public/TestimonialsSection';
 import { ContactSection } from './components/public/ContactSection';
-import { FavoritesView } from './components/public/FavoritesView';
 import { ClientAccountView } from './components/client/ClientAccountView';
 import { AuthModal, AuthMode } from './components/auth/AuthModal';
 
@@ -37,7 +35,7 @@ import { AdminReservations } from './components/admin/AdminReservations';
 import { AdminNotifications } from './components/admin/AdminNotifications';
 import { AdminSettings } from './components/admin/AdminSettings';
 
-type ViewMode = 'home' | 'properties' | 'property-details' | 'favorites' | 'contact' | 'account' | 'admin';
+type ViewMode = 'home' | 'properties' | 'property-details' | 'contact' | 'account' | 'admin';
 
 const MainApp: React.FC = () => {
   const { user, isAdmin } = useAuth();
@@ -131,10 +129,6 @@ const MainApp: React.FC = () => {
         return;
       } else if (path === '/contact') {
         setCurrentView('contact');
-        setSelectedProperty(null);
-        return;
-      } else if (path === '/favorites') {
-        setCurrentView('favorites');
         setSelectedProperty(null);
         return;
       } else if (path === '/account') {
@@ -235,13 +229,6 @@ const MainApp: React.FC = () => {
     if (view === 'contact') {
       window.history.pushState(null, '', '/contact');
       setCurrentView('contact');
-      setSelectedProperty(null);
-      return;
-    }
-
-    if (view === 'favorites') {
-      window.history.pushState(null, '', '/favorites');
-      setCurrentView('favorites');
       setSelectedProperty(null);
       return;
     }
@@ -423,13 +410,6 @@ const MainApp: React.FC = () => {
           ]}
         />
       )}
-      {currentView === 'favorites' && (
-        <SEOHead
-          title="Saved Properties | Chafique Property Agency"
-          settings={settings}
-          noIndex={true}
-        />
-      )}
       {currentView === 'account' && (
         <SEOHead
           title="Client Portal | Chafique Property Agency"
@@ -521,16 +501,6 @@ const MainApp: React.FC = () => {
           </div>
         )}
 
-        {currentView === 'favorites' && (
-          <div className="animate-in fade-in duration-300">
-            <FavoritesView
-              settings={settings}
-              onSelectProperty={handleOpenProperty}
-              onNavigateHome={() => setCurrentView('properties')}
-            />
-          </div>
-        )}
-
         {currentView === 'account' && (
           <div className="animate-in fade-in duration-300">
             <ClientAccountView
@@ -575,9 +545,7 @@ const MainApp: React.FC = () => {
 export function App() {
   return (
     <AuthProvider>
-      <FavoritesProvider>
-        <MainApp />
-      </FavoritesProvider>
+      <MainApp />
     </AuthProvider>
   );
 }

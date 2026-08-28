@@ -8,20 +8,17 @@ import {
   Car,
   CheckCircle,
   Share2,
-  Heart,
   MessageCircle,
   Phone,
   ShieldCheck,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
   ArrowLeft,
   Eye,
   Compass,
   FileCheck
 } from 'lucide-react';
 import { Property, SiteSettings } from '../../types';
-import { useFavorites } from '../../context/FavoritesContext';
 import { formatPrice } from '../../lib/seo';
 import { SEOHead } from '../common/SEOHead';
 import { ScheduleViewingModal } from '../common/ScheduleViewingModal';
@@ -45,13 +42,10 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   onBack,
   onSelectProperty,
 }) => {
-  const { isFavorite, toggleFavorite } = useFavorites();
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [showInquiryModal, setShowInquiryModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
-
-  const favorite = isFavorite(property.id);
 
   const images = property.images && property.images.length > 0
     ? property.images
@@ -170,18 +164,6 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => toggleFavorite(property)}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-                favorite
-                  ? 'bg-rose-50 border-rose-200 text-rose-600'
-                  : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-              }`}
-            >
-              <Heart className={`w-4 h-4 ${favorite ? 'fill-rose-500 text-rose-500' : ''}`} />
-              <span>{favorite ? 'Saved' : 'Save'}</span>
-            </button>
-
-            <button
               onClick={() => setShowShareModal(true)}
               className="flex items-center gap-1.5 px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-semibold text-slate-700 transition-colors cursor-pointer"
             >
@@ -211,8 +193,8 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
                 {isRent ? 'For Rent' : 'For Sale'}
               </span>
               {property.featured && (
-                <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-lg bg-amber-500 text-white shadow-md flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5" /> Featured Listing
+                <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-lg bg-amber-500 text-white shadow-md">
+                  Featured Listing
                 </span>
               )}
             </div>

@@ -155,10 +155,10 @@ export const Footer: React.FC<FooterProps> = ({ settings, onNavigate }) => {
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('favorites')}
+                  onClick={() => onNavigate('contact')}
                   className="text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >
-                  Saved Favorites
+                  Contact & Tour Booking
                 </button>
               </li>
             </ul>

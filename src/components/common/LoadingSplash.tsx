@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrandLogo } from './BrandLogo';
-import { ShieldCheck, MapPin, Sparkles } from 'lucide-react';
+import { ShieldCheck, MapPin } from 'lucide-react';
 
 interface LoadingSplashProps {
   agencyName?: string;
@@ -38,7 +38,7 @@ export const LoadingSplash: React.FC<LoadingSplashProps> = ({
         {/* Agency Name & Branding */}
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold tracking-wide uppercase">
-            <Sparkles className="w-3.5 h-3.5" />
+            <ShieldCheck className="w-3.5 h-3.5" />
             <span>Official Portal</span>
           </div>
 

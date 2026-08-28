@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Award, Lock, Sparkles, UserCheck, TrendingUp } from 'lucide-react';
+import { ShieldCheck, Award, Lock, TrendingUp } from 'lucide-react';
 
 export const WhyChooseUs: React.FC = () => {
   const points = [

@@ -6,14 +6,13 @@ import {
   Edit2,
   Trash2,
   Eye,
-  Sparkles,
   ExternalLink,
   Filter,
   CheckCircle,
   AlertTriangle
 } from 'lucide-react';
 import { Property, SiteSettings } from '../../types';
-import { deleteProperty, togglePropertyFeatured } from '../../services/propertyService';
+import { deleteProperty } from '../../services/propertyService';
 import { formatPrice } from '../../lib/seo';
 
 interface AdminPropertiesProps {
@@ -52,15 +51,6 @@ export const AdminProperties: React.FC<AdminPropertiesProps> = ({
     const matchesType = typeFilter === 'all' || p.type === typeFilter || p.propertyType === typeFilter;
     return matchesSearch && matchesStatus && matchesType;
   });
-
-  const handleToggleFeatured = async (property: Property, e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      await togglePropertyFeatured(property.id, !property.featured);
-    } catch (err) {
-      console.error('Failed to toggle featured:', err);
-    }
-  };
 
   const confirmDelete = async () => {
     if (!deleteTarget) return;
@@ -186,14 +176,13 @@ export const AdminProperties: React.FC<AdminPropertiesProps> = ({
                 <th className="py-3.5 px-4">Location (Kigali)</th>
                 <th className="py-3.5 px-4">Price</th>
                 <th className="py-3.5 px-4">Status</th>
-                <th className="py-3.5 px-4 text-center">Featured</th>
                 <th className="py-3.5 px-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredProperties.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-400">
+                  <td colSpan={5} className="py-12 text-center text-slate-400">
                     No properties match the selected criteria.
                   </td>
                 </tr>
@@ -246,22 +235,6 @@ export const AdminProperties: React.FC<AdminPropertiesProps> = ({
                         }`}>
                           {p.status}
                         </span>
-                      </td>
-
-                      {/* Featured toggle */}
-                      <td className="py-3 px-4 text-center">
-                        <button
-                          type="button"
-                          onClick={(e) => handleToggleFeatured(p, e)}
-                          className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                            p.featured
-                              ? 'bg-amber-50 text-amber-600 hover:bg-amber-100'
-                              : 'text-slate-300 hover:text-slate-600'
-                          }`}
-                          title={p.featured ? 'Featured on Spotlight' : 'Mark as Featured'}
-                        >
-                          <Sparkles className="w-4 h-4" />
-                        </button>
                       </td>
 
                       {/* Actions */}

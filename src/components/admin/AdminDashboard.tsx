@@ -7,7 +7,6 @@ import {
   TrendingUp,
   PlusCircle,
   RotateCcw,
-  Sparkles,
   ArrowRight,
   Eye,
   CheckCircle,

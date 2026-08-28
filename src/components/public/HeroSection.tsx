@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MapPin, Home, DollarSign, Bed, Sparkles, MessageCircle } from 'lucide-react';
+import { Search, MapPin, Home, DollarSign, Bed, ShieldCheck, MessageCircle } from 'lucide-react';
 import { FilterParams, PropertyType, SiteSettings } from '../../types';
 import { getGeneralWhatsAppUrl, openWhatsApp } from '../../lib/whatsapp';
 
@@ -84,7 +84,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 text-center space-y-7">
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-950/80 backdrop-blur-md border border-emerald-500/30 text-emerald-300 text-xs font-semibold uppercase tracking-wider shadow-sm">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
           <span>{settings.heroBadge || 'Verified Kigali Listings • 2026'}</span>
         </div>
 
