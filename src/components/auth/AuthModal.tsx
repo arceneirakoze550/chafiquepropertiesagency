@@ -13,6 +13,7 @@ import {
   EyeOff
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { BrandLogo } from '../common/BrandLogo';
 
 export type AuthMode = 'login' | 'signup' | 'forgot-password';
 
@@ -134,9 +135,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </button>
 
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-emerald-600 flex items-center justify-center shadow-lg">
-              <Building2 className="w-6 h-6 text-white" />
-            </div>
+            <BrandLogo
+              size="md"
+              variant="white-card"
+            />
             <div>
               <h2 className="text-base sm:text-lg font-bold text-white leading-tight">
                 {mode === 'login' && 'Sign In to Chafique Property'}

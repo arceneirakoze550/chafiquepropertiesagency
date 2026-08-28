@@ -12,6 +12,7 @@ import { getGeneralWhatsAppUrl, openWhatsApp } from './lib/whatsapp';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { SEOHead } from './components/common/SEOHead';
+import { LoadingSplash } from './components/common/LoadingSplash';
 import { MessageCircle } from 'lucide-react';
 
 // Public & Client Components
@@ -63,6 +64,15 @@ const MainApp: React.FC = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [loading, setLoading] = useState(true);
+  const [minSplashElapsed, setMinSplashElapsed] = useState(false);
+
+  // Guarantee branded loading display on initial open
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMinSplashElapsed(true);
+    }, 900);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Load Initial Settings and Subscribe to Real-Time Data Streams
   useEffect(() => {
@@ -273,14 +283,12 @@ const MainApp: React.FC = () => {
     openWhatsApp(url);
   };
 
-  if (loading || !settings) {
+  if (loading || !settings || !minSplashElapsed) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-white space-y-4">
-        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-sm font-semibold tracking-wide text-slate-300">
-          Chafique Property Agency loading...
-        </p>
-      </div>
+      <LoadingSplash
+        agencyName={settings?.siteTitle || 'Chafique Property Agency'}
+        tagline={settings?.companyTagline || "Kigali's Premier Real Estate Agency"}
+      />
     );
   }
 

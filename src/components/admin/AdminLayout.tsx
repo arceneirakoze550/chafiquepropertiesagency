@@ -17,6 +17,7 @@ import { useAuth } from '../../context/AuthContext';
 import { getNotifications, markNotificationAsRead } from '../../services/notificationService';
 import { AppNotification, SiteSettings } from '../../types';
 import { FirebaseStatusBanner } from '../common/FirebaseStatusBanner';
+import { BrandLogo } from '../common/BrandLogo';
 
 export type AdminTab = 'dashboard' | 'properties' | 'new-property' | 'inquiries' | 'reservations' | 'notifications' | 'settings';
 
@@ -78,14 +79,14 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
       {/* Sidebar for Desktop */}
       <aside className="hidden md:flex md:w-64 bg-slate-900 text-slate-300 flex-col shrink-0 border-r border-slate-800">
         {/* Brand */}
-        <div className="p-6 border-b border-slate-800 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-md font-black text-sm">
-            CP
-          </div>
-          <div>
-            <h2 className="text-sm font-bold text-white tracking-tight">Chafique Property</h2>
-            <span className="text-[10px] text-emerald-400 font-mono">Agency Admin Portal</span>
-          </div>
+        <div className="p-6 border-b border-slate-800">
+          <BrandLogo
+            size="sm"
+            showText={true}
+            textColor="light"
+            subtitle="Agency Admin Portal"
+            variant="white-card"
+          />
         </div>
 
         {/* Navigation */}

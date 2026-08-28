@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useFavorites } from '../../context/FavoritesContext';
 import { SiteSettings } from '../../types';
 import { FirebaseStatusBanner } from '../common/FirebaseStatusBanner';
+import { BrandLogo } from '../common/BrandLogo';
 import { getGeneralWhatsAppUrl, openWhatsApp } from '../../lib/whatsapp';
 
 interface NavbarProps {
@@ -71,23 +72,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between h-18">
           {/* Brand Logo */}
           <button
+            id="navbar-brand-logo"
             onClick={() => handleNav('home')}
             className="flex items-center gap-3 text-left group cursor-pointer"
           >
-            <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-md group-hover:bg-emerald-600 transition-colors">
-              <Building2 className="w-5 h-5 text-amber-400" />
-            </div>
-            <div>
-              <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 group-hover:text-emerald-700 transition-colors block leading-tight uppercase">
-                Chafique
-                <span className="text-emerald-700 font-bold ml-1.5">
-                  Property Agency
-                </span>
-              </span>
-              <span className="text-[10px] uppercase tracking-widest text-slate-500 font-medium block">
-                Kigali Real Estate • Rwanda
-              </span>
-            </div>
+            <BrandLogo
+              size="md"
+              showText={true}
+              subtitle="Kigali Real Estate • Rwanda"
+              variant="white-card"
+              logoClassName="group-hover:border-emerald-500 group-hover:shadow-md transition-all"
+            />
           </button>
 
           {/* Desktop Navigation Links */}

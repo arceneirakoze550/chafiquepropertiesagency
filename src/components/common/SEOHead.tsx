@@ -61,11 +61,11 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
   const computedCanonical = canonicalUrl || (property ? `${baseDomain}/property/${property.slug || property.id}` : `${baseDomain}${currentPath === '/' ? '' : currentPath}`);
 
-  // Image for Social Previews
+  // Image for Social Previews & Google Search Result Cards
   const defaultImage = ogImage ||
     property?.images?.find((img) => img.isCover)?.url ||
     property?.images?.[0]?.url ||
-    'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1600&q=80';
+    `${baseDomain}/logo.png`;
 
   useEffect(() => {
     // 1. Title Tag

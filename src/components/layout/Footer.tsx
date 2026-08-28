@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Building2, Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react';
 import { SiteSettings } from '../../types';
+import { BrandLogo } from '../common/BrandLogo';
 import { getGeneralWhatsAppUrl, openWhatsApp } from '../../lib/whatsapp';
 
 interface FooterProps {
@@ -34,19 +35,13 @@ export const Footer: React.FC<FooterProps> = ({ settings, onNavigate }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
           {/* Col 1: Brand & Tagline */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-lg">
-                <Building2 className="w-5 h-5" />
-              </div>
-              <div>
-                <span className="text-lg font-bold tracking-tight text-white block">
-                  {settings.companyName || 'Chafique Property Agency'}
-                </span>
-                <span className="text-[10px] text-emerald-400 font-semibold tracking-wider uppercase block">
-                  Kigali, Rwanda
-                </span>
-              </div>
-            </div>
+            <BrandLogo
+              size="md"
+              showText={true}
+              textColor="light"
+              subtitle="Kigali, Rwanda • Verified Properties"
+              variant="white-card"
+            />
             <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
               {settings.companyTagline || 'Prime Real Estate in Kigali & Across Rwanda'}. Your verified partner for premium residential houses, modern apartments, commercial buildings, and titled land plots in Kigali.
             </p>
