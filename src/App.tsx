@@ -101,6 +101,59 @@ const MainApp: React.FC = () => {
     };
   }, []);
 
+  // Handle URL Deep-Linking and Browser Back/Forward PopState
+  useEffect(() => {
+    const handleUrlRouting = () => {
+      const path = window.location.pathname;
+      if (path.startsWith('/property/')) {
+        const slug = path.replace('/property/', '').replace(/\/$/, '').trim();
+        if (slug) {
+          const found = properties.find((p) => p.slug === slug || p.id === slug);
+          if (found) {
+            setSelectedProperty(found);
+            setCurrentView('property-details');
+            return;
+          }
+        }
+      } else if (path === '/properties') {
+        setCurrentView('properties');
+        setSelectedProperty(null);
+        return;
+      } else if (path === '/contact') {
+        setCurrentView('contact');
+        setSelectedProperty(null);
+        return;
+      } else if (path === '/favorites') {
+        setCurrentView('favorites');
+        setSelectedProperty(null);
+        return;
+      } else if (path === '/account') {
+        setCurrentView('account');
+        setSelectedProperty(null);
+        return;
+      } else if (path === '/admin') {
+        if (isAdmin) {
+          setCurrentView('admin');
+        } else {
+          setCurrentView('home');
+        }
+        setSelectedProperty(null);
+        return;
+      } else if (path === '/' || path === '') {
+        setCurrentView('home');
+        setSelectedProperty(null);
+        return;
+      }
+    };
+
+    if (properties.length > 0) {
+      handleUrlRouting();
+    }
+
+    window.addEventListener('popstate', handleUrlRouting);
+    return () => window.removeEventListener('popstate', handleUrlRouting);
+  }, [properties, isAdmin]);
+
   const refreshAllData = async () => {
     try {
       const [propsData, inqsData, resData, settsData] = await Promise.all([
@@ -125,12 +178,13 @@ const MainApp: React.FC = () => {
     });
   };
 
-  // Handle Navigation
+  // Handle Navigation with URL PushState
   const navigateTo = (view: ViewMode | string, data?: any) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     if (view === 'admin') {
       if (isAdmin) {
+        window.history.pushState(null, '', '/admin');
         setCurrentView('admin');
         if (data?.tab) setAdminTab(data.tab);
       } else {
@@ -141,6 +195,7 @@ const MainApp: React.FC = () => {
 
     if (view === 'account') {
       if (user) {
+        window.history.pushState(null, '', '/account');
         setCurrentView('account');
       } else {
         handleOpenAuth('login');
@@ -149,12 +204,15 @@ const MainApp: React.FC = () => {
     }
 
     if (view === 'property-details' && data) {
+      const targetSlug = data.slug || data.id;
+      window.history.pushState(null, '', `/property/${targetSlug}`);
       setSelectedProperty(data);
       setCurrentView('property-details');
       return;
     }
 
     if (view === 'properties') {
+      window.history.pushState(null, '', '/properties');
       if (data) {
         setActiveFilters(data);
       } else {
@@ -164,25 +222,44 @@ const MainApp: React.FC = () => {
       return;
     }
 
-    if (view === 'home' || view === 'favorites' || view === 'contact') {
-      setCurrentView(view as ViewMode);
+    if (view === 'contact') {
+      window.history.pushState(null, '', '/contact');
+      setCurrentView('contact');
+      setSelectedProperty(null);
+      return;
+    }
+
+    if (view === 'favorites') {
+      window.history.pushState(null, '', '/favorites');
+      setCurrentView('favorites');
+      setSelectedProperty(null);
+      return;
+    }
+
+    if (view === 'home') {
+      window.history.pushState(null, '', '/');
+      setCurrentView('home');
       setSelectedProperty(null);
     }
   };
 
   const handleHeroSearch = (params: FilterParams) => {
+    window.history.pushState(null, '', '/properties');
     setActiveFilters(params);
     setCurrentView('properties');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSelectDistrictSector = (district?: string, sector?: string) => {
+    window.history.pushState(null, '', '/properties');
     setActiveFilters({ district, sector });
     setCurrentView('properties');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOpenProperty = (prop: Property) => {
+    const targetSlug = prop.slug || prop.id;
+    window.history.pushState(null, '', `/property/${targetSlug}`);
     setSelectedProperty(prop);
     setCurrentView('property-details');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -303,10 +380,55 @@ const MainApp: React.FC = () => {
   }
 
   // --- PUBLIC & CLIENT PORTAL VIEWS ---
+  const baseDomain = settings?.siteUrl || 'https://chafiquepropertiesagency.vercel.app';
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col selection:bg-emerald-500 selection:text-white">
-      {/* Global SEO Meta Head */}
-      <SEOHead settings={settings} />
+      {/* Dynamic SEO Meta Head */}
+      {currentView === 'home' && (
+        <SEOHead
+          settings={settings}
+          breadcrumbs={[{ name: 'Home', url: `${baseDomain}/` }]}
+        />
+      )}
+      {currentView === 'properties' && (
+        <SEOHead
+          title="Houses & Properties for Sale & Rent in Kigali | Chafique Property Agency"
+          description="Browse verified residential and commercial properties for sale and rent across Gasabo, Kicukiro, and Nyarugenge districts in Kigali, Rwanda."
+          canonicalUrl={`${baseDomain}/properties`}
+          settings={settings}
+          breadcrumbs={[
+            { name: 'Home', url: `${baseDomain}/` },
+            { name: 'Properties in Kigali', url: `${baseDomain}/properties` },
+          ]}
+        />
+      )}
+      {currentView === 'contact' && (
+        <SEOHead
+          title="Contact Us | Chafique Property Agency Kigali"
+          description="Get in touch with Chafique Property Agency in Kigali, Rwanda for house viewings, buying, selling, or property investments. Call +250 788 348 201."
+          canonicalUrl={`${baseDomain}/contact`}
+          settings={settings}
+          breadcrumbs={[
+            { name: 'Home', url: `${baseDomain}/` },
+            { name: 'Contact Us', url: `${baseDomain}/contact` },
+          ]}
+        />
+      )}
+      {currentView === 'favorites' && (
+        <SEOHead
+          title="Saved Properties | Chafique Property Agency"
+          settings={settings}
+          noIndex={true}
+        />
+      )}
+      {currentView === 'account' && (
+        <SEOHead
+          title="Client Portal | Chafique Property Agency"
+          settings={settings}
+          noIndex={true}
+        />
+      )}
 
       {/* Unified Authentication Modal (Login / Sign Up / Forgot Password) */}
       <AuthModal

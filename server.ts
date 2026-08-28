@@ -164,7 +164,26 @@ async function startServer() {
 
   // Dynamic Sitemap generator API
   app.get('/sitemap.xml', (req, res) => {
-    const siteUrl = 'https://chafique-property-agency.com';
+    const siteUrl = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://chafiquepropertiesagency.vercel.app').replace(/\/$/, '');
+    
+    // Core property slugs for search indexing
+    const propertySlugs = [
+      'luxury-villa-nyarutarama-golf-estate',
+      'modern-family-home-kibagabaga-sunset-view',
+      'executive-diplomatic-residence-kiyovu',
+      'prime-residential-land-rebero-kicukiro',
+      'furnished-luxury-penthouse-gacuriro-vision-city',
+      'commercial-office-building-cbd-nyarugenge',
+    ];
+
+    const propertyEntries = propertySlugs.map(
+      (slug) => `  <url>
+    <loc>${siteUrl}/property/${slug}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`
+    ).join('\n');
+
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -180,17 +199,20 @@ async function startServer() {
   <url>
     <loc>${siteUrl}/contact</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
+${propertyEntries}
 </urlset>`;
-    res.header('Content-Type', 'application/xml');
+
+    res.header('Content-Type', 'application/xml; charset=utf-8');
     res.send(sitemap);
   });
 
   // Robots.txt
   app.get('/robots.txt', (req, res) => {
-    res.header('Content-Type', 'text/plain');
-    res.send(`User-agent: *\nAllow: /\nDisallow: /admin\nSitemap: https://chafique-property-agency.com/sitemap.xml\n`);
+    const siteUrl = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://chafiquepropertiesagency.vercel.app').replace(/\/$/, '');
+    res.header('Content-Type', 'text/plain; charset=utf-8');
+    res.send(`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /account\nDisallow: /api/\n\nHost: ${siteUrl}\nSitemap: ${siteUrl}/sitemap.xml\n`);
   });
 
   // Vite middleware in development vs Static serving in production

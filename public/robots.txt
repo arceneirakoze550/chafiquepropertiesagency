@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /account
+Disallow: /api/
 
-Sitemap: https://chafique-property-agency.com/sitemap.xml
+# Host & Sitemap specification
+Host: https://chafiquepropertiesagency.vercel.app
+Sitemap: https://chafiquepropertiesagency.vercel.app/sitemap.xml
+

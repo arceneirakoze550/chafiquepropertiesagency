@@ -57,6 +57,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   const sector = property.location?.sector || property.sector || '';
   const city = property.location?.city || property.city || 'Kigali';
   const address = property.location?.address || property.address || `${district}, ${city}`;
+  const imageAlt = `${property.title} - ${property.bedrooms ? `${property.bedrooms} bedroom ` : ''}${property.propertyType || 'property'} for ${isRent ? 'rent' : 'sale'} in ${sector ? `${sector}, ` : ''}${district}, Kigali, Rwanda`;
 
   if (layout === 'list') {
     return (
@@ -69,7 +70,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         <div className="relative sm:w-72 md:w-80 h-56 sm:h-auto shrink-0 bg-slate-900 overflow-hidden">
           <img
             src={currentImg.url}
-            alt={`${property.title} - ${city}`}
+            alt={imageAlt}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
             referrerPolicy="no-referrer"
@@ -182,7 +183,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
       <div className="relative h-60 w-full bg-slate-900 overflow-hidden">
         <img
           src={currentImg.url}
-          alt={`${property.title} - ${city}`}
+          alt={imageAlt}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
           referrerPolicy="no-referrer"

@@ -93,15 +93,21 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     .filter((p) => p.id !== property.id && (p.propertyType === property.propertyType || p.district === property.district))
     .slice(0, 3);
 
+  const baseDomain = settings?.siteUrl || 'https://chafiquepropertiesagency.vercel.app';
+  const breadcrumbs = [
+    { name: 'Home', url: `${baseDomain}/` },
+    { name: 'Properties in Kigali', url: `${baseDomain}/properties` },
+    { name: property.title, url: `${baseDomain}/property/${property.slug || property.id}` }
+  ];
+
   return (
     <div className="bg-slate-50 min-h-screen py-8">
-      {/* Dynamic SEO Meta & Schema.org Structured Data */}
+      {/* Dynamic SEO Meta, Open Graph, Twitter & Schema.org JSON-LD Structured Data */}
       <SEOHead
-        title={`${property.title} | Chafique Property Agency`}
-        description={`${property.title} in ${district}, Kigali. ${property.bedrooms || 0} Beds, ${property.bathrooms || 0} Baths, ${property.size || property.areaSqFt} sqm. Verified real estate listing in Rwanda.`}
         property={property}
         settings={settings}
         ogImage={currentPhoto.url}
+        breadcrumbs={breadcrumbs}
       />
 
       {/* Viewing / Inquire / Share Modals */}
@@ -124,14 +130,42 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         onClose={() => setShowShareModal(false)}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        {/* Visual Breadcrumb Navigation */}
+        <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-2 text-xs text-slate-500">
+          <button
+            onClick={() => {
+              window.history.pushState(null, '', '/');
+              onBack();
+            }}
+            className="hover:text-emerald-700 transition-colors font-medium cursor-pointer"
+          >
+            Home
+          </button>
+          <span className="text-slate-400">/</span>
+          <button
+            onClick={onBack}
+            className="hover:text-emerald-700 transition-colors font-medium cursor-pointer"
+          >
+            Properties in Kigali
+          </button>
+          <span className="text-slate-400">/</span>
+          <span className="text-slate-500 font-medium">
+            {district}
+          </span>
+          <span className="text-slate-400">/</span>
+          <span className="text-slate-800 font-semibold truncate max-w-[220px] sm:max-w-md">
+            {property.title}
+          </span>
+        </nav>
+
         {/* Navigation & Action Bar */}
         <div className="flex flex-wrap items-center justify-between gap-4">
           <button
             onClick={onBack}
             className="flex items-center gap-2 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-emerald-600" /> Back to listings
+            <ArrowLeft className="w-4 h-4 text-emerald-600" /> Back to Kigali Listings
           </button>
 
           <div className="flex items-center gap-2">
@@ -163,9 +197,10 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
           <div className="relative h-[340px] sm:h-[480px] lg:h-[540px] w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 shadow-lg">
             <img
               src={currentPhoto.url}
-              alt={currentPhoto.caption || property.title}
+              alt={`${property.title} - ${currentPhoto.caption || `${property.bedrooms ? `${property.bedrooms} bedroom ` : ''}${property.propertyType || 'property'} for ${isRent ? 'rent' : 'sale'} in ${district}, Kigali, Rwanda`}`}
               className="w-full h-full object-cover transition-opacity duration-300"
               referrerPolicy="no-referrer"
+              loading="eager"
             />
 
             {/* Badges Overlay */}
@@ -219,7 +254,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
               {images.map((img, index) => (
                 <button
-                  key={img.id}
+                  key={img.id || index}
                   onClick={() => setSelectedPhotoIndex(index)}
                   className={`relative w-24 h-18 sm:w-28 sm:h-20 shrink-0 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
                     index === selectedPhotoIndex
@@ -229,9 +264,10 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
                 >
                   <img
                     src={img.url}
-                    alt={`Thumbnail ${index + 1}`}
+                    alt={`${property.title} - Image ${index + 1} in ${district}, Kigali`}
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
+                    loading="lazy"
                   />
                 </button>
               ))}
