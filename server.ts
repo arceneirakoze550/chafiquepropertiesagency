@@ -35,22 +35,33 @@ async function startServer() {
         return res.status(400).json({ error: 'No image data provided in payload' });
       }
 
-      const cloudName = process.env.CLOUDINARY_CLOUD_NAME || process.env.VITE_CLOUDINARY_CLOUD_NAME || 'chafique-property';
+      const cloudName = (process.env.CLOUDINARY_CLOUD_NAME || process.env.VITE_CLOUDINARY_CLOUD_NAME || 'chafique-property').trim();
       const targetFolder = folder || 'chafique-property-agency/properties';
-      const targetPreset = upload_preset || 'chafique_properties';
+      const targetPreset = (upload_preset || process.env.CLOUDINARY_UPLOAD_PRESET || process.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'chafique_properties').trim();
+
+      const apiKey = process.env.CLOUDINARY_API_KEY?.trim();
+      const apiSecret = process.env.CLOUDINARY_API_SECRET?.trim();
 
       // Cloudinary API URL
       const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
 
       const formData = new URLSearchParams();
       formData.append('file', file);
-      formData.append('upload_preset', targetPreset);
       formData.append('folder', targetFolder);
 
-      // If server-side API Key & Secret exist, we can use authenticated parameters
-      const apiKey = process.env.CLOUDINARY_API_KEY;
-      if (apiKey) {
+      // If both API Key & Secret exist on the server, use signed upload
+      if (apiKey && apiSecret) {
+        const timestamp = Math.round(new Date().getTime() / 1000);
+        const crypto = await import('crypto');
+        const signatureString = `folder=${targetFolder}&timestamp=${timestamp}${apiSecret}`;
+        const signature = crypto.createHash('sha1').update(signatureString).digest('hex');
+
         formData.append('api_key', apiKey);
+        formData.append('timestamp', String(timestamp));
+        formData.append('signature', signature);
+      } else {
+        // Otherwise use unsigned upload preset (never pass api_key without valid signature)
+        formData.append('upload_preset', targetPreset);
       }
 
       const uploadResponse = await fetch(cloudinaryUrl, {

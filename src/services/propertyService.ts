@@ -94,16 +94,20 @@ export const subscribeToProperties = (
             saveLocalProperties(properties);
             onSuccess(properties);
           } else {
-            // If collection is empty in Firestore, load local initial data and seed once
+            // If collection is completely empty in Firestore, check if we have cached or initial data
             const local = getLocalProperties();
-            onSuccess(local);
-            seedPropertiesToFirestore(INITIAL_PROPERTIES).catch((err) =>
-              console.warn('[PropertyService] Auto-seeding note:', err)
-            );
+            if (!local || local.length === 0) {
+              onSuccess(INITIAL_PROPERTIES);
+              seedPropertiesToFirestore(INITIAL_PROPERTIES).catch((err) =>
+                console.warn('[PropertyService] Auto-seeding initial properties note:', err)
+              );
+            } else {
+              onSuccess(local);
+            }
           }
         },
         (error) => {
-          console.warn('[PropertyService] onSnapshot listener warning:', error);
+          console.warn('[PropertyService] onSnapshot listener error:', error);
           if (onError) onError(error);
           onSuccess(getLocalProperties());
         }
@@ -136,9 +140,13 @@ export const getProperties = async (): Promise<Property[]> => {
         saveLocalProperties(properties);
         return properties;
       } else {
-        console.info('[PropertyService] Seeding initial Kigali properties to Firestore...');
-        await seedPropertiesToFirestore(INITIAL_PROPERTIES);
-        return INITIAL_PROPERTIES;
+        const local = getLocalProperties();
+        if (!local || local.length === 0) {
+          console.info('[PropertyService] Initializing Kigali properties to Firestore...');
+          await seedPropertiesToFirestore(INITIAL_PROPERTIES);
+          return INITIAL_PROPERTIES;
+        }
+        return local;
       }
     } catch (error) {
       console.warn('[PropertyService] Firestore fetch error, using local fallback:', error);
@@ -234,8 +242,9 @@ export const createProperty = async (
         _serverUpdatedAt: serverTimestamp(),
       });
       console.info('[PropertyService] Property created in Firestore:', propertyId);
-    } catch (error) {
+    } catch (error: any) {
       console.error('[PropertyService] Failed writing to Firestore:', error);
+      throw new Error(`Firestore Error: ${error?.message || 'Could not save property to cloud database'}`);
     }
   }
 
@@ -274,8 +283,9 @@ export const updateProperty = async (id: string, updates: Partial<Property>): Pr
         _serverUpdatedAt: serverTimestamp(),
       });
       console.info('[PropertyService] Fast update completed in Firestore:', id);
-    } catch (error) {
+    } catch (error: any) {
       console.error('[PropertyService] Failed updating in Firestore:', error);
+      throw new Error(`Firestore Error: ${error?.message || 'Could not update property in cloud database'}`);
     }
   }
 
@@ -303,8 +313,9 @@ export const deleteProperty = async (id: string, images?: PropertyImage[]): Prom
     try {
       await deleteDoc(doc(db, COLLECTION_NAME, id));
       console.info('[PropertyService] Direct property deleted from Firestore:', id);
-    } catch (error) {
+    } catch (error: any) {
       console.error('[PropertyService] Failed deleting from Firestore:', error);
+      throw new Error(`Firestore Error: ${error?.message || 'Could not delete property from cloud database'}`);
     }
   }
 

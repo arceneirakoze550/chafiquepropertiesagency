@@ -88,19 +88,12 @@ export const AdminPropertyForm: React.FC<AdminPropertyFormProps> = ({
 
   // Images
   const [images, setImages] = useState<PropertyImage[]>(
-    property?.images || [
-      {
-        id: 'img-kigali-1',
-        url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80',
-        caption: 'Front exterior view in Kigali',
-        isCover: true,
-        uploadedAt: new Date().toISOString(),
-      }
-    ]
+    property?.images && property.images.length > 0 ? property.images : []
   );
 
   const [showImageUploadModal, setShowImageUploadModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleTitleChange = (val: string) => {
     setTitle(val);
@@ -157,13 +150,15 @@ export const AdminPropertyForm: React.FC<AdminPropertyFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
+
     if (!title || !price || !district) {
-      alert('Please fill in the required fields (Title, Price, District).');
+      setErrorMessage('Please fill in all required fields (Title, Price, District).');
       return;
     }
 
     if (images.length === 0) {
-      alert('Please provide at least 1 image for the property listing.');
+      setErrorMessage('Please upload at least 1 image for the property listing.');
       return;
     }
 
@@ -227,9 +222,9 @@ export const AdminPropertyForm: React.FC<AdminPropertyFormProps> = ({
       }
 
       onSave();
-    } catch (err) {
-      console.error(err);
-      alert('Failed to save property listing. Check inputs and try again.');
+    } catch (err: any) {
+      console.error('[AdminPropertyForm] Save error:', err);
+      setErrorMessage(err?.message || 'Failed to save property listing. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -276,13 +271,30 @@ export const AdminPropertyForm: React.FC<AdminPropertyFormProps> = ({
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
+            className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
             <span>{isSubmitting ? 'Saving...' : 'Save & Publish Listing'}</span>
           </button>
         </div>
       </div>
+
+      {/* Error Banner */}
+      {errorMessage && (
+        <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl flex items-start justify-between gap-3 text-rose-800 text-xs">
+          <div>
+            <strong className="font-bold">Validation or Save Error: </strong>
+            <span>{errorMessage}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setErrorMessage(null)}
+            className="text-rose-600 hover:text-rose-900 font-bold ml-2 cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Main Form Body */}
       <form onSubmit={handleSubmit} className="space-y-8">
