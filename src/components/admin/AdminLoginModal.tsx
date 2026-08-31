@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Shield, Lock, Mail, Key, X, AlertCircle } from 'lucide-react';
+import { Shield, Lock, Mail, X, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { isFirebaseConfigured } from '../../lib/firebase';
 
 interface AdminLoginModalProps {
   isOpen: boolean;
@@ -14,9 +13,9 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
   onClose,
   onSuccess,
 }) => {
-  const { login, quickAdminLogin, error, clearError } = useAuth();
-  const [email, setEmail] = useState('admin@estatehub-properties.com');
-  const [password, setPassword] = useState('AdminEstate2026!');
+  const { login, error, clearError } = useAuth();
+  const [email, setEmail] = useState('chafiquentuye@gmail.com');
+  const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
@@ -35,12 +34,6 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
     }
   };
 
-  const handleQuickDemo = () => {
-    quickAdminLogin();
-    onSuccess();
-    onClose();
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in">
       <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
@@ -48,7 +41,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
         <div className="bg-slate-900 text-white p-6 relative">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-1 text-slate-400 hover:text-white rounded-lg"
+            className="absolute top-4 right-4 p-1 text-slate-400 hover:text-white rounded-lg cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -80,7 +73,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
                 <input
                   type="email"
                   required
-                  placeholder="admin@estatehub-properties.com"
+                  placeholder="chafiquentuye@gmail.com"
                   value={email}
                   onChange={(e) => {
                     clearError();
@@ -112,26 +105,11 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer"
+              className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer disabled:opacity-50"
             >
               {isSubmitting ? 'Authenticating...' : 'Sign In with Credentials'}
             </button>
           </form>
-
-          {/* Quick Demo Admin Button */}
-          <div className="pt-3 border-t border-slate-100 space-y-2">
-            <button
-              type="button"
-              onClick={handleQuickDemo}
-              className="w-full py-2.5 px-4 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
-            >
-              <Key className="w-4 h-4 text-emerald-600" />
-              <span>Instant Principal Broker Login (1-Click)</span>
-            </button>
-            <p className="text-[11px] text-slate-400 text-center">
-              Allows instant exploration of Admin Dashboard, Property Editor & Inquiries
-            </p>
-          </div>
         </div>
       </div>
     </div>
