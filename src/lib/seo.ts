@@ -17,7 +17,7 @@ export interface SEOProps {
 /**
  * Generates dynamic, keyword-rich and natural SEO title for a Kigali property
  */
-export const generatePropertySeoTitle = (property: Property, agencyName: string = 'Chafique Property Agency'): string => {
+export const generatePropertySeoTitle = (property: Property, agencyName: string = 'Inzu Chafique Properties Agency'): string => {
   const typeLabel = property.propertyType
     ? property.propertyType.charAt(0).toUpperCase() + property.propertyType.slice(1)
     : 'Property';
@@ -48,7 +48,7 @@ export const generatePropertySeoDescription = (property: Property): string => {
   const sizeStr = (property.size || property.areaSqFt) ? `${property.size || property.areaSqFt} sqm, ` : '';
   const priceFormatted = formatPrice(property.price, property.currency);
 
-  const desc = `Verified ${bedroomsStr}${bathroomsStr}${sizeStr}${typeLabel} ${actionLabel} in ${locationStr}, Kigali, Rwanda. Listed at ${priceFormatted}. Book a private viewing with Chafique Property Agency.`;
+  const desc = `Verified ${bedroomsStr}${bathroomsStr}${sizeStr}${typeLabel} ${actionLabel} in ${locationStr}, Kigali, Rwanda. Listed at ${priceFormatted}. Book a private viewing with Inzu Chafique Properties Agency.`;
   return desc.length > 165 ? desc.slice(0, 162) + '...' : desc;
 };
 
@@ -126,7 +126,7 @@ export const generatePropertySchema = (property: Property, siteUrl: string = DEF
         : 'https://schema.org/SellAction',
       'seller': {
         '@type': 'RealEstateAgent',
-        'name': 'Chafique Property Agency',
+        'name': 'Inzu Chafique Properties Agency',
         'telephone': '+250788348201',
         'url': baseDomain
       }
@@ -158,8 +158,8 @@ export const generateOrganizationSchema = (settings?: SiteSettings | null) => {
   return {
     '@context': 'https://schema.org',
     '@type': 'RealEstateAgency',
-    'name': settings?.companyName || 'Chafique Property Agency',
-    'alternateName': ['Chafique Properties', 'Chafique Real Estate Rwanda'],
+    'name': settings?.companyName || 'Inzu Chafique Properties Agency',
+    'alternateName': ['Inzu Chafique Properties', 'Inzu Chafique Real Estate Rwanda', 'Chafique Properties Agency'],
     'description': settings?.companyTagline || 'Premier Real Estate Agency in Kigali, Rwanda. Verified houses for sale, houses for rent, luxury villas, modern apartments and titled investment plots.',
     'url': baseDomain,
     'logo': `${baseDomain}/logo.png`,
@@ -169,21 +169,21 @@ export const generateOrganizationSchema = (settings?: SiteSettings | null) => {
     'priceRange': '$$ - $$$$',
     'address': {
       '@type': 'PostalAddress',
-      'streetAddress': settings?.address || 'KG 7 Ave, Kigali Heights & KG 11 Ave',
+      'streetAddress': settings?.address || 'Kicukiro, Kanombe, Kabeza at Gamabe Gas Trading House near Kabeza Modern Market',
       'addressLocality': settings?.city || 'Kigali',
-      'addressRegion': 'Gasabo',
+      'addressRegion': 'Kicukiro',
       'postalCode': '00000',
       'addressCountry': 'RW'
     },
     'geo': {
       '@type': 'GeoCoordinates',
-      'latitude': -1.9441,
-      'longitude': 30.1035
+      'latitude': -1.9790,
+      'longitude': 30.1340
     },
     'areaServed': [
       { '@type': 'City', 'name': 'Kigali' },
-      { '@type': 'AdministrativeArea', 'name': 'Gasabo' },
       { '@type': 'AdministrativeArea', 'name': 'Kicukiro' },
+      { '@type': 'AdministrativeArea', 'name': 'Gasabo' },
       { '@type': 'AdministrativeArea', 'name': 'Nyarugenge' },
       { '@type': 'Country', 'name': 'Rwanda' }
     ],
@@ -191,11 +191,14 @@ export const generateOrganizationSchema = (settings?: SiteSettings | null) => {
       'Houses for sale in Kigali',
       'Houses for rent in Kigali',
       'Properties in Kicukiro',
+      'Properties in Kanombe',
+      'Properties in Kabeza',
       'Properties in Gasabo',
       'Properties in Nyarutarama',
       'Properties in Kibagabaga',
       'Properties in Gacuriro',
       'Luxury villas Kigali',
+      'Plots and land in Rwanda',
       'Real Estate in Rwanda'
     ],
     'openingHoursSpecification': [

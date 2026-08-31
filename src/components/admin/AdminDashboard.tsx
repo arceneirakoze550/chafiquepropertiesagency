@@ -11,7 +11,8 @@ import {
   Eye,
   CheckCircle,
   Clock,
-  Home
+  Home,
+  FileText
 } from 'lucide-react';
 import { Property, Inquiry, Reservation, SiteSettings } from '../../types';
 import { formatPrice } from '../../lib/seo';
@@ -37,8 +38,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 }) => {
   // Metrics calculation
   const totalListings = properties.length;
-  const forSaleCount = properties.filter((p) => p.status === 'for-sale').length;
-  const forRentCount = properties.filter((p) => p.status === 'for-rent').length;
+  const forSaleCount = properties.filter((p) => p.status === 'for-sale' || p.listingType === 'sale').length;
+  const forRentCount = properties.filter((p) => p.status === 'for-rent' || p.listingType === 'rent').length;
   const totalPortfolioValue = properties.reduce((acc, curr) => acc + (curr.price || 0), 0);
 
   const newInquiries = inquiries.filter((i) => i.status === 'new').length;
@@ -61,11 +62,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             Portfolio Intelligence & Operations
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Real-time management for listings, client dossiers, and private viewing schedules.
+            Real-time management for listings, client dossiers, and daily/weekly/monthly/yearly reporting.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => onNavigateTab('reports')}
+            className="px-3.5 py-2 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 text-emerald-800 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
+            title="Generate daily, weekly, monthly, and yearly property reports"
+          >
+            <FileText className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Generate Reports</span>
+          </button>
+
           <button
             onClick={handleReSeed}
             className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
@@ -77,7 +87,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
           <button
             onClick={() => onNavigateTab('new-property')}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
+            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
           >
             <PlusCircle className="w-4 h-4" />
             <span>Create Property</span>

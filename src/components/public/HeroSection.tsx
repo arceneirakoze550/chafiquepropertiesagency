@@ -145,7 +145,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <select
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-900"
+                className="w-full px-3 py-2 text-xs bg-white text-slate-900 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
               >
                 <option value="all">All Kigali Districts</option>
                 <option value="Gasabo">Gasabo (Nyarutarama, Kibagabaga...)</option>
@@ -164,7 +164,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 placeholder="Nyarutarama, Gacuriro, Rebero..."
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-900"
+                className="w-full px-3 py-2 text-xs bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
               />
             </div>
 
@@ -176,7 +176,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <select
                 value={propertyType}
                 onChange={(e) => setPropertyType(e.target.value as any)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-900 capitalize"
+                className="w-full px-3 py-2 text-xs bg-white text-slate-900 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium capitalize"
               >
                 <option value="all">All Types</option>
                 <option value="villa">Luxury Villa</option>
@@ -195,7 +195,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <select
                 value={priceRange}
                 onChange={(e) => setPriceRange(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-900"
+                className="w-full px-3 py-2 text-xs bg-white text-slate-900 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
               >
                 <option value="all">Any Price</option>
                 {activeTab === 'sale' ? (

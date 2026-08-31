@@ -1,12 +1,12 @@
 import { Property, SiteSettings } from '../types';
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
-  companyName: 'Chafique Property Agency',
-  companyTagline: 'Prime Real Estate in Kigali & Across Rwanda',
+  companyName: 'Inzu Chafique Properties Agency',
+  companyTagline: 'Prime Real Estate & Property Brokerage in Kigali, Rwanda',
   email: 'chafiquentuye@gmail.com',
   phone: '+250788348201',
   whatsappNumber: '+250788348201',
-  address: 'KG 7 Ave, Kigali Heights & KG 11 Ave',
+  address: 'Kicukiro, Kanombe, Kabeza at Gamabe Gas Trading House near Kabeza Modern Market',
   city: 'Kigali',
   country: 'Rwanda',
   currency: 'USD',
@@ -14,8 +14,8 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   heroTitle: 'Find Your Dream Home & Prime Land in Kigali',
   heroSubtitle: 'Explore verified residential villas, modern apartments, family homes, commercial properties, and investment plots across Kicukiro, Gasabo, and Nyarugenge.',
   heroBadge: 'Verified Kigali Listings • 2026',
-  metaTitle: 'Chafique Property Agency | Kigali Real Estate, Houses & Land for Sale & Rent',
-  metaDescription: 'Chafique Property Agency is your trusted partner for prime real estate in Kigali, Rwanda. Verified villas, apartments, plots, and commercial spaces with instant WhatsApp bookings.',
+  metaTitle: 'Inzu Chafique Properties Agency | Kigali Real Estate, Houses & Land for Sale & Rent',
+  metaDescription: 'Inzu Chafique Properties Agency is your trusted partner for prime real estate in Kigali, Rwanda. Verified villas, apartments, plots, and commercial spaces with instant WhatsApp bookings.',
   socialLinks: {
     facebook: 'https://facebook.com',
     instagram: 'https://instagram.com',
@@ -23,7 +23,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
     twitter: 'https://twitter.com',
     youtube: 'https://youtube.com',
   },
-  siteUrl: typeof window !== 'undefined' ? window.location.origin : 'https://chafique-property-agency.com',
+  siteUrl: typeof window !== 'undefined' ? window.location.origin : 'https://chafiquepropertiesagency.vercel.app',
   updatedAt: new Date().toISOString(),
 };
 

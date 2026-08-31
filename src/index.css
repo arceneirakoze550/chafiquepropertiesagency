@@ -1,1 +1,48 @@
 @import "tailwindcss";
+
+@layer base {
+  *, ::before, ::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: #f8fafc;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Universal Input & Textarea Visibility Guarantee */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="range"]),
+  select,
+  textarea {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1;
+  }
+
+  /* Ensure placeholder text is distinct and readable */
+  input::placeholder,
+  textarea::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+  }
+
+  /* High contrast select option elements */
+  select option {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  /* Focus states */
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none !important;
+    border-color: #059669 !important;
+    box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2) !important;
+  }
+}

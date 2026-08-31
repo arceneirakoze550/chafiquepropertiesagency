@@ -12,6 +12,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { SEOHead } from './components/common/SEOHead';
 import { LoadingSplash } from './components/common/LoadingSplash';
+import { PWAInstallPrompt } from './components/common/PWAInstallPrompt';
 import { MessageCircle } from 'lucide-react';
 
 // Public & Client Components
@@ -20,7 +21,7 @@ import { PropertyGrid } from './components/public/PropertyGrid';
 import { PropertyDetails } from './components/public/PropertyDetails';
 import { NeighborhoodSpotlight } from './components/public/NeighborhoodSpotlight';
 import { WhyChooseUs } from './components/public/WhyChooseUs';
-import { TestimonialsSection } from './components/public/TestimonialsSection';
+import { AboutUsSection } from './components/public/AboutUsSection';
 import { ContactSection } from './components/public/ContactSection';
 import { ClientAccountView } from './components/client/ClientAccountView';
 import { AuthModal, AuthMode } from './components/auth/AuthModal';
@@ -30,12 +31,13 @@ import { AdminLayout, AdminTab } from './components/admin/AdminLayout';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AdminProperties } from './components/admin/AdminProperties';
 import { AdminPropertyForm } from './components/admin/AdminPropertyForm';
+import { AdminReporting } from './components/admin/AdminReporting';
 import { AdminInquiries } from './components/admin/AdminInquiries';
 import { AdminReservations } from './components/admin/AdminReservations';
 import { AdminNotifications } from './components/admin/AdminNotifications';
 import { AdminSettings } from './components/admin/AdminSettings';
 
-type ViewMode = 'home' | 'properties' | 'property-details' | 'contact' | 'account' | 'admin';
+type ViewMode = 'home' | 'properties' | 'property-details' | 'about' | 'contact' | 'account' | 'admin';
 
 const MainApp: React.FC = () => {
   const { user, isAdmin } = useAuth();
@@ -264,7 +266,7 @@ const MainApp: React.FC = () => {
 
   const openFloatingWhatsApp = () => {
     const url = getGeneralWhatsAppUrl(
-      'Hello Chafique Property Agency, I am reaching out from your website to inquire about properties in Kigali.',
+      'Hello Inzu Chafique Properties Agency, I am reaching out from your website to inquire about properties in Kigali.',
       settings?.whatsappNumber || '+250788348201'
     );
     openWhatsApp(url);
@@ -273,8 +275,8 @@ const MainApp: React.FC = () => {
   if (loading || !settings || !minSplashElapsed) {
     return (
       <LoadingSplash
-        agencyName={settings?.siteTitle || 'Chafique Property Agency'}
-        tagline={settings?.companyTagline || "Kigali's Premier Real Estate Agency"}
+        agencyName={settings?.siteTitle || 'Inzu Chafique Properties Agency'}
+        tagline={settings?.companyTagline || "Kigali's Premier Real Estate Brokerage"}
       />
     );
   }
@@ -342,6 +344,15 @@ const MainApp: React.FC = () => {
           />
         )}
 
+        {adminTab === 'reports' && (
+          <AdminReporting
+            properties={properties}
+            inquiries={inquiries}
+            reservations={reservations}
+            settings={settings}
+          />
+        )}
+
         {adminTab === 'inquiries' && (
           <AdminInquiries
             inquiries={inquiries}
@@ -388,7 +399,7 @@ const MainApp: React.FC = () => {
       )}
       {currentView === 'properties' && (
         <SEOHead
-          title="Houses & Properties for Sale & Rent in Kigali | Chafique Property Agency"
+          title="Houses & Properties for Sale & Rent in Kigali | Inzu Chafique Properties Agency"
           description="Browse verified residential and commercial properties for sale and rent across Gasabo, Kicukiro, and Nyarugenge districts in Kigali, Rwanda."
           canonicalUrl={`${baseDomain}/properties`}
           settings={settings}
@@ -400,8 +411,8 @@ const MainApp: React.FC = () => {
       )}
       {currentView === 'contact' && (
         <SEOHead
-          title="Contact Us | Chafique Property Agency Kigali"
-          description="Get in touch with Chafique Property Agency in Kigali, Rwanda for house viewings, buying, selling, or property investments. Call +250 788 348 201."
+          title="Contact Us | Inzu Chafique Properties Agency Kigali"
+          description="Get in touch with Inzu Chafique Properties Agency in Kigali, Rwanda for house viewings, buying, selling, or property investments. Call +250 788 348 201."
           canonicalUrl={`${baseDomain}/contact`}
           settings={settings}
           breadcrumbs={[
@@ -410,9 +421,21 @@ const MainApp: React.FC = () => {
           ]}
         />
       )}
+      {currentView === 'about' && (
+        <SEOHead
+          title="About Us & Team | Inzu Chafique Properties Agency Kigali"
+          description="About Inzu Chafique Properties Agency in Kigali, Rwanda (Kicukiro, Kanombe, Kabeza at Gamabe Gas Trading House near Kabeza Modern Market). Brokerage team and developer profile."
+          canonicalUrl={`${baseDomain}/about`}
+          settings={settings}
+          breadcrumbs={[
+            { name: 'Home', url: `${baseDomain}/` },
+            { name: 'About Us', url: `${baseDomain}/about` },
+          ]}
+        />
+      )}
       {currentView === 'account' && (
         <SEOHead
-          title="Client Portal | Chafique Property Agency"
+          title="Client Portal | Inzu Chafique Properties Agency"
           settings={settings}
           noIndex={true}
         />
@@ -468,11 +491,8 @@ const MainApp: React.FC = () => {
               subtitle="Explore verified houses, luxury villas, modern apartments, and titled plots across Kigali"
             />
 
-            {/* The Chafique Standard & Value Pillars */}
+            {/* The Agency Standard & Value Pillars */}
             <WhyChooseUs />
-
-            {/* Client Endorsements & Testimonials */}
-            <TestimonialsSection />
           </div>
         )}
 
@@ -486,6 +506,12 @@ const MainApp: React.FC = () => {
               title="Kigali Properties Catalog"
               subtitle="Browse all verified residential and commercial listings for sale or rent in Gasabo, Kicukiro, and Nyarugenge"
             />
+          </div>
+        )}
+
+        {currentView === 'about' && (
+          <div className="animate-in fade-in duration-300">
+            <AboutUsSection settings={settings} onNavigate={navigateTo} />
           </div>
         )}
 
@@ -538,6 +564,9 @@ const MainApp: React.FC = () => {
         settings={settings}
         onNavigate={navigateTo}
       />
+
+      {/* PWA Install Notification for First-time & Returning Clients */}
+      <PWAInstallPrompt />
     </div>
   );
 };

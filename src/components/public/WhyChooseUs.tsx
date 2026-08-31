@@ -30,7 +30,7 @@ export const WhyChooseUs: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs uppercase tracking-wider text-emerald-400 font-bold">
-            The Chafique Standard
+            The Inzu Chafique Properties Standard
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Uncompromising Excellence in Luxury Representation

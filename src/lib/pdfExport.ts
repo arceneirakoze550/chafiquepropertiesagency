@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import { Property, SiteSettings } from '../types';
+import { Property, SiteSettings, Inquiry, Reservation } from '../types';
 import { formatPrice } from './seo';
 
 // Helper to convert logo image to base64 for PDF embedding
@@ -66,8 +66,8 @@ export async function exportPropertyPDF(property: Property, settings: SiteSettin
   const titleX = logoBase64 ? margin + 30 : margin;
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(16);
-  doc.text(settings.companyName || 'CHAFIQUE PROPERTY AGENCY', titleX, 17);
+  doc.setFontSize(15);
+  doc.text(settings.companyName || 'INZU CHAFIQUE PROPERTIES AGENCY', titleX, 17);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
@@ -194,7 +194,7 @@ export async function exportPropertyPDF(property: Property, settings: SiteSettin
   doc.setFontSize(8.5);
   const cleanDescription = (property.description || 'Verified property in prime Kigali location.').replace(/\n+/g, ' ');
   const splitDesc = doc.splitTextToSize(cleanDescription, contentWidth);
-  const descLinesToDraw = splitDesc.slice(0, 5); // keep concise
+  const descLinesToDraw = splitDesc.slice(0, 5);
   doc.text(descLinesToDraw, margin, currentY);
   currentY += descLinesToDraw.length * 4.5 + 4;
 
@@ -218,27 +218,12 @@ export async function exportPropertyPDF(property: Property, settings: SiteSettin
       const fx = margin + col * fColW;
       const fy = currentY + row * 5;
       
-      // Draw small bullet
       doc.setFillColor(5, 150, 105);
       doc.circle(fx + 2, fy - 1, 1, 'F');
       doc.text(feat, fx + 6, fy);
     });
 
     currentY += Math.ceil(Math.min(features.length, 8) / 2) * 5 + 4;
-  }
-
-  // Video Tour Info (if available)
-  if (property.videoUrl || property.virtualTourUrl) {
-    doc.setFillColor(238, 242, 255); // indigo-50
-    doc.setDrawColor(199, 210, 254);
-    doc.roundedRect(margin, currentY, contentWidth, 10, 1.5, 1.5, 'FD');
-
-    doc.setTextColor(67, 56, 202);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.text('VIDEO TOUR & VIRTUAL WALKTHROUGH AVAILABLE', margin + 4, currentY + 6.5);
-
-    currentY += 14;
   }
 
   // Footer / Broker Contact Box
@@ -254,23 +239,37 @@ export async function exportPropertyPDF(property: Property, settings: SiteSettin
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(203, 213, 225);
-  doc.text(`Official Agency: ${settings.companyName || 'Chafique Property Agency'}`, margin, footerY + 15);
+  doc.text(`Official Agency: ${settings.companyName || 'Inzu Chafique Properties Agency'}`, margin, footerY + 15);
   doc.text(`WhatsApp / Call: ${settings.whatsappNumber || '+250 788 348 201'}  |  Direct Tel: ${settings.phone || '+250 788 348 201'}`, margin, footerY + 20);
   doc.text(`Office Location: ${settings.address || 'Kigali City Center'}, ${settings.city || 'Kigali'}, Rwanda`, margin, footerY + 25);
 
   doc.setFontSize(7);
   doc.setTextColor(148, 163, 184);
-  doc.text(`Generated on ${new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} • Verified Kigali Real Estate Factsheet`, margin, footerY + 31);
+  doc.text(`Generated on ${new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} • Developed by Arcene IRAKOZE`, margin, footerY + 31);
 
   // Save PDF
   const filename = `${property.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-brochure.pdf`;
   doc.save(filename);
 }
 
+export interface ReportExportOptions {
+  timeframe: 'daily' | 'weekly' | 'monthly' | 'yearly' | 'all';
+  timeframeLabel: string;
+  startDate?: string;
+  endDate?: string;
+  filterSummary?: string;
+}
+
 /**
- * Fast client-side generation of complete agency inventory report
+ * Generates and downloads an executive PDF report for daily, weekly, monthly, or yearly timeframes
  */
-export async function exportInventoryReportPDF(properties: Property[], settings: SiteSettings): Promise<void> {
+export async function exportTimeframeReportPDF(
+  properties: Property[],
+  inquiries: Inquiry[],
+  reservations: Reservation[],
+  settings: SiteSettings,
+  options: ReportExportOptions
+): Promise<void> {
   const doc = new jsPDF({
     orientation: 'landscape',
     unit: 'mm',
@@ -290,149 +289,211 @@ export async function exportInventoryReportPDF(properties: Property[], settings:
 
   // Header Background (Slate 900)
   doc.setFillColor(15, 23, 42);
-  doc.rect(0, 5, pageWidth, 26, 'F');
+  doc.rect(0, 5, pageWidth, 28, 'F');
 
   if (logoBase64) {
     try {
-      doc.addImage(logoBase64, 'PNG', margin, 7, 22, 22);
+      doc.addImage(logoBase64, 'PNG', margin, 7, 24, 24);
     } catch (e) {
       console.warn('Could not add logo', e);
     }
   }
 
-  const headerTextX = logoBase64 ? margin + 26 : margin;
+  const headerTextX = logoBase64 ? margin + 28 : margin;
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14);
-  doc.text(settings.companyName || 'CHAFIQUE PROPERTY AGENCY', headerTextX, 14);
+  doc.text(settings.companyName || 'INZU CHAFIQUE PROPERTIES AGENCY', headerTextX, 13);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
+  doc.setFontSize(9);
   doc.setTextColor(167, 243, 208);
-  doc.text('OFFICIAL KIGALI REAL ESTATE INVENTORY & VALUATION REPORT', headerTextX, 20);
+  doc.text(`OFFICIAL ${options.timeframe.toUpperCase()} PROPERTY & BROKERAGE REPORT`, headerTextX, 19);
 
   doc.setFontSize(7.5);
   doc.setTextColor(203, 213, 225);
-  doc.text(`Generated: ${new Date().toLocaleString()}  |  Total Properties: ${properties.length}`, headerTextX, 26);
+  doc.text(
+    `Period: ${options.timeframeLabel}  |  Generated: ${new Date().toLocaleString()}  |  Total Properties: ${properties.length}`,
+    headerTextX,
+    25
+  );
+
+  if (options.filterSummary) {
+    doc.setTextColor(148, 163, 184);
+    doc.setFontSize(7);
+    doc.text(`Filters Applied: ${options.filterSummary}`, headerTextX, 30);
+  }
 
   // Summary Metrics Banner
-  let currentY = 36;
+  let currentY = 38;
   doc.setFillColor(248, 250, 252);
-  doc.rect(margin, currentY, contentWidth, 14, 'F');
+  doc.rect(margin, currentY, contentWidth, 18, 'F');
   doc.setDrawColor(226, 232, 240);
-  doc.rect(margin, currentY, contentWidth, 14, 'S');
+  doc.rect(margin, currentY, contentWidth, 18, 'S');
 
   const forSale = properties.filter((p) => p.listingType === 'sale' || p.status === 'available' || p.status === 'for-sale');
   const forRent = properties.filter((p) => p.listingType === 'rent' || p.status === 'for-rent' || p.status === 'rented');
   const totalValuationUSD = properties.reduce((acc, p) => acc + (p.currency === 'USD' ? p.price : p.price / 1350), 0);
 
-  const mColW = contentWidth / 4;
+  const mColW = contentWidth / 5;
+
+  // Metric 1: Listings Count
   doc.setTextColor(100, 116, 139);
   doc.setFontSize(7);
-  doc.text('TOTAL ACTIVE LISTINGS', margin + 4, currentY + 5);
+  doc.text('MATCHING LISTINGS', margin + 4, currentY + 6);
   doc.setTextColor(15, 23, 42);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9.5);
-  doc.text(`${properties.length} Properties`, margin + 4, currentY + 10.5);
+  doc.setFontSize(10);
+  doc.text(`${properties.length} Properties`, margin + 4, currentY + 13);
 
+  // Metric 2: For Sale
   doc.setTextColor(100, 116, 139);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
-  doc.text('PROPERTIES FOR SALE', margin + mColW + 4, currentY + 5);
+  doc.text('FOR SALE', margin + mColW + 4, currentY + 6);
   doc.setTextColor(15, 23, 42);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9.5);
-  doc.text(`${forSale.length} Listings`, margin + mColW + 4, currentY + 10.5);
+  doc.setFontSize(10);
+  doc.text(`${forSale.length} Units`, margin + mColW + 4, currentY + 13);
 
+  // Metric 3: For Rent
   doc.setTextColor(100, 116, 139);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
-  doc.text('PROPERTIES FOR RENT', margin + mColW * 2 + 4, currentY + 5);
+  doc.text('FOR RENT', margin + mColW * 2 + 4, currentY + 6);
   doc.setTextColor(15, 23, 42);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9.5);
-  doc.text(`${forRent.length} Listings`, margin + mColW * 2 + 4, currentY + 10.5);
+  doc.setFontSize(10);
+  doc.text(`${forRent.length} Units`, margin + mColW * 2 + 4, currentY + 13);
 
+  // Metric 4: Portfolio Valuation
   doc.setTextColor(100, 116, 139);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
-  doc.text('PORTFOLIO VALUATION (EST.)', margin + mColW * 3 + 4, currentY + 5);
+  doc.text('TOTAL VALUATION (EST.)', margin + mColW * 3 + 4, currentY + 6);
   doc.setTextColor(4, 120, 87);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9.5);
-  doc.text(`$${Math.round(totalValuationUSD).toLocaleString()} USD`, margin + mColW * 3 + 4, currentY + 10.5);
+  doc.setFontSize(10);
+  doc.text(`$${Math.round(totalValuationUSD).toLocaleString()} USD`, margin + mColW * 3 + 4, currentY + 13);
 
-  currentY += 19;
+  // Metric 5: Client Inquiries & Bookings
+  doc.setTextColor(100, 116, 139);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7);
+  doc.text('CLIENT ACTIVITY', margin + mColW * 4 + 4, currentY + 6);
+  doc.setTextColor(67, 56, 202);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.text(`${inquiries.length} Inq. • ${reservations.length} Tours`, margin + mColW * 4 + 4, currentY + 13);
+
+  currentY += 23;
 
   // Table Header
-  doc.setFillColor(15, 23, 42);
-  doc.rect(margin, currentY, contentWidth, 7, 'F');
-  doc.setTextColor(255, 255, 255);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(7.5);
+  const drawTableHeader = (y: number) => {
+    doc.setFillColor(15, 23, 42);
+    doc.rect(margin, y, contentWidth, 7, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
 
-  doc.text('#', margin + 2, currentY + 4.5);
-  doc.text('TITLE / DESCRIPTION', margin + 10, currentY + 4.5);
-  doc.text('TYPE', margin + 85, currentY + 4.5);
-  doc.text('LOCATION (KIGALI)', margin + 115, currentY + 4.5);
-  doc.text('SPECS (BED/BATH/AREA)', margin + 165, currentY + 4.5);
-  doc.text('PRICE', margin + 215, currentY + 4.5);
-  doc.text('STATUS', margin + 250, currentY + 4.5);
+    doc.text('#', margin + 2, y + 4.5);
+    doc.text('PROPERTY TITLE', margin + 10, y + 4.5);
+    doc.text('TYPE', margin + 85, y + 4.5);
+    doc.text('LOCATION (KIGALI)', margin + 115, y + 4.5);
+    doc.text('SPECS (BED/BATH/AREA)', margin + 165, y + 4.5);
+    doc.text('PRICE', margin + 215, y + 4.5);
+    doc.text('STATUS', margin + 250, y + 4.5);
+  };
 
+  drawTableHeader(currentY);
   currentY += 7;
 
-  // Table Rows
+  // Table Rows with Multi-Page capability
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
 
-  properties.slice(0, 20).forEach((prop, idx) => {
-    const rowY = currentY + idx * 6.8;
-    if (rowY > pageHeight - 20) return; // Prevent page overflow
+  const rowHeight = 7;
+  const maxRowsPerPage = Math.floor((pageHeight - 20 - currentY) / rowHeight);
 
-    // Alternating row background
+  properties.forEach((prop, idx) => {
+    // If running out of vertical room, create a new page
+    if (currentY + rowHeight > pageHeight - 15) {
+      doc.addPage();
+      currentY = 15;
+      drawTableHeader(currentY);
+      currentY += 7;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+    }
+
     if (idx % 2 === 0) {
       doc.setFillColor(248, 250, 252);
-      doc.rect(margin, rowY - 1.5, contentWidth, 6.8, 'F');
+      doc.rect(margin, currentY - 1.5, contentWidth, rowHeight, 'F');
     }
 
     doc.setTextColor(100, 116, 139);
-    doc.text(`${idx + 1}`, margin + 2, rowY + 3);
+    doc.text(`${idx + 1}`, margin + 2, currentY + 3);
 
     // Title (truncated)
     doc.setTextColor(15, 23, 42);
     doc.setFont('helvetica', 'bold');
     const safeTitle = prop.title.length > 42 ? `${prop.title.substring(0, 40)}...` : prop.title;
-    doc.text(safeTitle, margin + 10, rowY + 3);
+    doc.text(safeTitle, margin + 10, currentY + 3);
 
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(71, 85, 105);
-    doc.text((prop.propertyType || prop.type || 'House').toUpperCase(), margin + 85, rowY + 3);
+    doc.text((prop.propertyType || prop.type || 'House').toUpperCase(), margin + 85, currentY + 3);
 
     const dist = prop.location?.district || prop.district || 'Gasabo';
     const sec = prop.location?.sector || prop.sector || '';
-    doc.text(`${dist}${sec ? ` • ${sec}` : ''}`, margin + 115, rowY + 3);
+    doc.text(`${dist}${sec ? ` • ${sec}` : ''}`, margin + 115, currentY + 3);
 
     const isL = prop.propertyType === 'land' || prop.type === 'land';
-    const specStr = isL ? `${prop.size || 0} sqm plot` : `${prop.bedrooms || 0}B / ${prop.bathrooms || 0}Ba • ${prop.size || 0}sqm`;
-    doc.text(specStr, margin + 165, rowY + 3);
+    const specStr = isL
+      ? `${prop.size || 0} sqm plot`
+      : `${prop.bedrooms || 0}B / ${prop.bathrooms || 0}Ba • ${prop.size || 0}sqm`;
+    doc.text(specStr, margin + 165, currentY + 3);
 
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(4, 120, 87);
     const pPrice = formatPrice(prop.price, prop.currency, settings.currencySymbol);
-    doc.text(pPrice, margin + 215, rowY + 3);
+    doc.text(pPrice, margin + 215, currentY + 3);
 
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(71, 85, 105);
-    doc.text((prop.status || 'Available').toUpperCase(), margin + 250, rowY + 3);
+    doc.text((prop.status || 'Available').toUpperCase(), margin + 250, currentY + 3);
+
+    currentY += rowHeight;
   });
 
-  // Footer
+  // Footer on current page
   doc.setFillColor(15, 23, 42);
   doc.rect(0, pageHeight - 10, pageWidth, 10, 'F');
   doc.setTextColor(203, 213, 225);
   doc.setFontSize(6.5);
-  doc.text(`Chafique Property Agency • Official Kigali Real Estate Inventory • WhatsApp: ${settings.whatsappNumber || '+250 788 348 201'} • Email: ${settings.email || 'chafiquentuye@gmail.com'}`, margin, pageHeight - 4);
+  doc.text(
+    `${settings.companyName || 'Inzu Chafique Properties Agency'} • Official Kigali Brokerage • WhatsApp: ${settings.whatsappNumber || '+250 788 348 201'} • Developer: Arcene IRAKOZE (arceneirakoze550@gmail.com, 0796599461)`,
+    margin,
+    pageHeight - 4
+  );
 
-  const filename = `chafique-agency-inventory-report-${new Date().toISOString().slice(0, 10)}.pdf`;
+  const cleanTimeframe = options.timeframe.toLowerCase();
+  const filename = `inzu-chafique-${cleanTimeframe}-report-${new Date().toISOString().slice(0, 10)}.pdf`;
   doc.save(filename);
+}
+
+/**
+ * Fast client-side generation of complete agency inventory report
+ */
+export async function exportInventoryReportPDF(properties: Property[], settings: SiteSettings): Promise<void> {
+  return exportTimeframeReportPDF(
+    properties,
+    [],
+    [],
+    settings,
+    {
+      timeframe: 'all',
+      timeframeLabel: `Full Agency Portfolio (${properties.length} Listings)`,
+    }
+  );
 }

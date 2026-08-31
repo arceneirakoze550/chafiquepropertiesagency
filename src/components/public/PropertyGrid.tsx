@@ -138,7 +138,7 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
             <select
               value={filters.sortBy || 'newest'}
               onChange={(e) => updateFilter('sortBy', e.target.value)}
-              className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             >
               <option value="newest">Newest First</option>
               <option value="price-asc">Price: Low to High</option>
@@ -198,7 +198,7 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
                 placeholder="Title, City, Street..."
                 value={filters.searchQuery || ''}
                 onChange={(e) => updateFilter('searchQuery', e.target.value)}
-                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 text-xs bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
             </div>
 
@@ -217,8 +217,8 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
                     onClick={() => updateFilter('status', item.val)}
                     className={`py-1.5 text-xs rounded-lg font-medium border text-center transition-all cursor-pointer ${
                       filters.status === item.val
-                        ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-semibold'
-                        : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                        ? 'border-emerald-600 bg-emerald-50 text-emerald-700 font-semibold'
+                        : 'border-slate-300 text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     {item.label}
@@ -233,7 +233,7 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
               <select
                 value={filters.propertyType || 'all'}
                 onChange={(e) => updateFilter('propertyType', e.target.value)}
-                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg capitalize focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 text-xs bg-white text-slate-900 border border-slate-300 rounded-lg capitalize focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
                 <option value="all">All Types</option>
                 <option value="villa">Villa</option>
@@ -252,7 +252,7 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
                 <select
                   value={filters.minBeds || 0}
                   onChange={(e) => updateFilter('minBeds', Number(e.target.value) || undefined)}
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs bg-white text-slate-900 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                   <option value={0}>Any Beds</option>
                   <option value={2}>2+ Beds</option>
@@ -267,7 +267,7 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
                 <select
                   value={filters.minBaths || 0}
                   onChange={(e) => updateFilter('minBaths', Number(e.target.value) || undefined)}
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs bg-white text-slate-900 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                   <option value={0}>Any Baths</option>
                   <option value={2}>2+ Baths</option>

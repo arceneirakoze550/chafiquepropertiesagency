@@ -85,7 +85,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         {!imgError ? (
           <img
             src={logoAsset || '/logo.png'}
-            alt="Chafique Property Agency"
+            alt="Inzu Chafique Properties Agency"
             className={`${sizeConfig.img} object-contain transition-transform duration-300`}
             loading="eager"
             onError={() => {
@@ -104,8 +104,10 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       {showText && (
         <div className="leading-tight select-none">
           <div className={`${sizeConfig.title} ${titleColor} tracking-tight uppercase flex items-center gap-1.5`}>
+            <span className="text-emerald-600 font-extrabold">Inzu</span>
             <span>Chafique</span>
-            <span className="text-emerald-600 font-extrabold">Property</span>
+            <span className="text-slate-700 dark:text-slate-300 font-bold hidden sm:inline">Properties</span>
+            <span className="text-emerald-600 font-extrabold">Agency</span>
           </div>
           <div className={`${sizeConfig.sub} ${subColor} font-medium tracking-wide flex items-center gap-1`}>
             <span>{subtitle || 'Kigali, Rwanda'}</span>

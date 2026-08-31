@@ -46,7 +46,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
   };
 
   const handleWhatsApp = () => {
-    const text = `Hello Chafique Property Agency, my name is ${name || 'Client'}. I am reaching out regarding ${interest} properties in Kigali.`;
+    const text = `Hello Inzu Chafique Properties Agency, my name is ${name || 'Client'}. I am reaching out regarding ${interest} properties in Kigali.`;
     const url = getGeneralWhatsAppUrl(text, settings.whatsappNumber || '+250788348201');
     openWhatsApp(url);
   };
@@ -54,8 +54,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
   return (
     <section className="bg-slate-50 min-h-screen py-12">
       <SEOHead
-        title="Contact Chafique Property Agency | Kigali Real Estate"
-        description={`Contact Chafique Property Agency in Kigali, Rwanda. Call or WhatsApp +250 788 348 201 for houses for sale, rentals, land plots, and property management.`}
+        title="Contact Inzu Chafique Properties Agency | Kigali Real Estate"
+        description={`Contact Inzu Chafique Properties Agency in Kigali, Rwanda (Kicukiro, Kanombe, Kabeza at Gamabe Gas Trading House near Kabeza Modern Market). Call or WhatsApp +250 788 348 201.`}
         settings={settings}
       />
 
@@ -66,10 +66,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
             Rwanda Real Estate Advisory
           </span>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Contact Chafique Property Agency
+            Contact Inzu Chafique Properties Agency
           </h1>
           <p className="text-xs sm:text-sm text-slate-500">
-            Looking to buy a house, rent an apartment, acquire titled land, or list your property in Kigali? Reach our senior brokers today.
+            Looking to buy a house, rent an apartment, acquire titled land, or list your property in Kigali? Reach our verified brokers today.
           </p>
         </div>
 
@@ -84,7 +84,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                   <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <div>
                     <strong className="text-white block">Location & Office</strong>
-                    <span>{settings.address || 'KG 7 Ave, Kigali Heights & KG 11 Ave'}, {settings.city || 'Kigali'}, {settings.country || 'Rwanda'}</span>
+                    <span>{settings.address || 'Kicukiro, Kanombe, Kabeza at Gamabe Gas Trading House near Kabeza Modern Market'}, {settings.city || 'Kigali'}, {settings.country || 'Rwanda'}</span>
                   </div>
                 </div>
 
@@ -149,7 +149,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Inquiry Received Successfully!</h3>
                 <p className="text-xs text-slate-600 max-w-md mx-auto">
-                  Thank you, <strong className="text-slate-900">{name}</strong>. A Chafique Property Agency advisor will reach back to you via phone or WhatsApp shortly.
+                  Thank you, <strong className="text-slate-900">{name}</strong>. An Inzu Chafique Properties Agency advisor will reach back to you via phone or WhatsApp shortly.
                 </p>
                 <button
                   onClick={() => setIsSuccess(false)}
@@ -200,7 +200,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                       placeholder="Jean-Paul Habimana"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                      className="w-full px-3 py-2.5 text-xs bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium shadow-xs"
                     />
                   </div>
 
@@ -212,7 +212,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                       placeholder="client@domain.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                      className="w-full px-3 py-2.5 text-xs bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium shadow-xs"
                     />
                   </div>
 
@@ -224,7 +224,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                       placeholder="+250 788 000 000"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                      className="w-full px-3 py-2.5 text-xs bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium shadow-xs"
                     />
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ settings }) => {
                     placeholder="Tell us about the location in Kigali (e.g., Gasabo, Nyarutarama, Kibagabaga, Kicukiro), your budget, or specific property features..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none font-medium"
+                    className="w-full px-3 py-2.5 text-xs bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none font-medium shadow-xs"
                   />
                 </div>
 

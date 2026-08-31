@@ -11,14 +11,15 @@ import {
   ArrowLeft,
   Shield,
   Menu,
-  X
+  X,
+  FileText
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { getNotifications, markNotificationAsRead } from '../../services/notificationService';
 import { AppNotification, SiteSettings } from '../../types';
 import { BrandLogo } from '../common/BrandLogo';
 
-export type AdminTab = 'dashboard' | 'properties' | 'new-property' | 'inquiries' | 'reservations' | 'notifications' | 'settings';
+export type AdminTab = 'dashboard' | 'properties' | 'new-property' | 'reports' | 'inquiries' | 'reservations' | 'notifications' | 'settings';
 
 interface AdminLayoutProps {
   currentTab: AdminTab;
@@ -67,6 +68,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'properties', label: 'Property Listings', icon: Building },
     { id: 'new-property', label: 'Add New Property', icon: PlusCircle },
+    { id: 'reports', label: 'Reports & PDF Export', icon: FileText },
     { id: 'inquiries', label: 'Client Inquiries', icon: MessageSquare },
     { id: 'reservations', label: 'Viewing Bookings', icon: Calendar },
     { id: 'notifications', label: 'Notification Logs', icon: Bell, badge: unreadCount },
@@ -156,7 +158,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
           >
             {mobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
-          <span className="text-sm font-bold">Chafique Property Admin</span>
+          <span className="text-sm font-bold">Inzu Chafique Admin</span>
         </div>
         <button
           onClick={onExitAdmin}

@@ -76,8 +76,8 @@ export const ClientAccountView: React.FC<ClientAccountViewProps> = ({
 
   const handleWhatsAppFollowup = (propertyTitle?: string, refId?: string) => {
     const text = propertyTitle
-      ? `Hello Chafique Property Agency, I am following up on my inquiry for "${propertyTitle}" (${user?.email}).`
-      : `Hello Chafique Property Agency, I am reaching out regarding my client account (${user?.email}).`;
+      ? `Hello Inzu Chafique Properties Agency, I am following up on my inquiry for "${propertyTitle}" (${user?.email}).`
+      : `Hello Inzu Chafique Properties Agency, I am reaching out regarding my client account (${user?.email}).`;
     const url = getGeneralWhatsAppUrl(text, settings.whatsappNumber || '+250788348201');
     openWhatsApp(url);
   };
@@ -389,7 +389,7 @@ export const ClientAccountView: React.FC<ClientAccountViewProps> = ({
             <div className="space-y-2 text-xs">
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
                 <span className="font-bold text-slate-900 block">Kigali Office Address:</span>
-                <span className="text-slate-600">{settings.address || 'KG 7 Ave, Kigali Heights & KG 11 Ave'}, Kigali, Rwanda</span>
+                <span className="text-slate-600">{settings.address || 'Kicukiro, Kanombe, Kabeza at Gamabe Gas Trading House near Kabeza Modern Market'}, Kigali, Rwanda</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
                 <span className="font-bold text-slate-900 block">Direct Broker WhatsApp:</span>

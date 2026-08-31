@@ -141,7 +141,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             />
             <div>
               <h2 className="text-base sm:text-lg font-bold text-white leading-tight">
-                {mode === 'login' && 'Sign In to Chafique Property'}
+                {mode === 'login' && 'Sign In to Inzu Chafique Properties'}
                 {mode === 'signup' && 'Create Client Account'}
                 {mode === 'forgot-password' && 'Reset Your Password'}
               </h2>
@@ -205,7 +205,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         setClientValidationMsg(null);
                         setFullName(e.target.value);
                       }}
-                      className="w-full pl-10 pr-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                      className="w-full pl-10 pr-3.5 py-2.5 text-xs bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium shadow-xs"
                     />
                   </div>
                 </div>
@@ -228,7 +228,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       setClientValidationMsg(null);
                       setEmail(e.target.value);
                     }}
-                    className="w-full pl-10 pr-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-xs bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium shadow-xs"
                   />
                 </div>
               </div>
@@ -262,7 +262,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         setClientValidationMsg(null);
                         setPassword(e.target.value);
                       }}
-                      className="w-full pl-10 pr-10 py-2.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                      className="w-full pl-10 pr-10 py-2.5 text-xs bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium shadow-xs"
                     />
                     <button
                       type="button"
@@ -293,7 +293,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         setClientValidationMsg(null);
                         setConfirmPassword(e.target.value);
                       }}
-                      className="w-full pl-10 pr-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                      className="w-full pl-10 pr-3.5 py-2.5 text-xs bg-white text-slate-900 placeholder:text-slate-400 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium shadow-xs"
                     />
                   </div>
                 </div>

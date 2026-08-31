@@ -29,7 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const handleWhatsApp = () => {
     const url = getGeneralWhatsAppUrl(
-      'Hello Chafique Property Agency, I would like to inquire about available properties for sale and rent in Kigali.',
+      'Hello Inzu Chafique Properties Agency, I would like to inquire about available properties for sale and rent in Kigali.',
       settings.whatsappNumber || '+250788348201'
     );
     openWhatsApp(url);
@@ -118,6 +118,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="px-3.5 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
             >
               Plots & Land
+            </button>
+
+            <button
+              onClick={() => handleNav('about')}
+              className={`px-3.5 py-2 text-sm font-medium rounded-lg transition-colors cursor-pointer ${
+                currentView === 'about'
+                  ? 'text-emerald-700 bg-emerald-50/80 font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              About Us
             </button>
 
             <button
@@ -220,6 +231,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-800 hover:bg-slate-50 cursor-pointer"
             >
               Land & Plots
+            </button>
+            <button
+              onClick={() => handleNav('about')}
+              className="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-800 hover:bg-slate-50 cursor-pointer"
+            >
+              About Us & Team
             </button>
             <button
               onClick={() => handleNav('contact')}

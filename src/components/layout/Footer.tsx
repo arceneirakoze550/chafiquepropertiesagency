@@ -23,7 +23,7 @@ export const Footer: React.FC<FooterProps> = ({ settings, onNavigate }) => {
 
   const handleWhatsApp = () => {
     const url = getGeneralWhatsAppUrl(
-      'Hello Chafique Property Agency, I would like to inquire regarding off-market acquisitions and prime properties in Kigali.',
+      'Hello Inzu Chafique Properties Agency, I would like to inquire regarding off-market acquisitions and prime properties in Kigali.',
       settings.whatsappNumber || '+250788348201'
     );
     openWhatsApp(url);
@@ -49,7 +49,7 @@ export const Footer: React.FC<FooterProps> = ({ settings, onNavigate }) => {
             <div className="space-y-2 text-xs text-slate-400 pt-2">
               <div className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>{settings.address || 'KG 7 Ave, Kigali Heights & KG 11 Ave'}, {settings.city || 'Kigali'}, {settings.country || 'Rwanda'}</span>
+                <span>{settings.address || 'Kicukiro, Kanombe, Kabeza at Gamabe Gas Trading House near Kabeza Modern Market'}, {settings.city || 'Kigali'}, {settings.country || 'Rwanda'}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -209,15 +209,52 @@ export const Footer: React.FC<FooterProps> = ({ settings, onNavigate }) => {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} {settings.companyName || 'Chafique Property Agency'}. Registered Real Estate Brokerage in Rwanda.</p>
-          <div className="flex items-center gap-6">
-            <a href="/robots.txt" target="_blank" className="hover:text-slate-300">Robots.txt</a>
-            <a href="/sitemap.xml" target="_blank" className="hover:text-slate-300">Sitemap.xml</a>
-            <button onClick={() => onNavigate('contact')} className="hover:text-slate-300 cursor-pointer">
-              Contact & Location
-            </button>
+        {/* Bottom bar with Developer Credit */}
+        <div className="pt-8 space-y-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            <p>© {new Date().getFullYear()} {settings.companyName || 'Inzu Chafique Properties Agency'}. All Rights Reserved. Verified Real Estate Brokerage in Kigali, Rwanda.</p>
+            <div className="flex items-center gap-6 text-slate-400">
+              <button onClick={() => onNavigate('home')} className="hover:text-emerald-400 transition-colors cursor-pointer">
+                Home
+              </button>
+              <button onClick={() => onNavigate('properties')} className="hover:text-emerald-400 transition-colors cursor-pointer">
+                Properties
+              </button>
+              <button onClick={() => onNavigate('about')} className="hover:text-emerald-400 transition-colors cursor-pointer">
+                About Us
+              </button>
+              <button onClick={() => onNavigate('contact')} className="hover:text-emerald-400 transition-colors cursor-pointer">
+                Contact & Location
+              </button>
+            </div>
+          </div>
+
+          {/* Developer Attribution Card */}
+          <div className="pt-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="text-slate-400">System Developer:</span>
+              <span className="text-emerald-400 font-bold tracking-wide">Arcene IRAKOZE</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 text-slate-300">
+              <a
+                href="mailto:arceneirakoze550@gmail.com"
+                className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors"
+                title="Email Developer"
+              >
+                <Mail className="w-3.5 h-3.5 text-emerald-500" />
+                <span>arceneirakoze550@gmail.com</span>
+              </a>
+              <span className="text-slate-700 hidden sm:inline">•</span>
+              <a
+                href="tel:0796599461"
+                className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors font-medium"
+                title="Call Developer"
+              >
+                <Phone className="w-3.5 h-3.5 text-emerald-500" />
+                <span>0796599461</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
