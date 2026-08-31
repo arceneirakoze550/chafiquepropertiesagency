@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   Download, 
   X, 
-  Monitor, 
-  Smartphone, 
   CheckCircle, 
   Share2, 
   Sparkles, 
@@ -14,103 +12,56 @@ import {
   ArrowRight,
   ExternalLink,
   Laptop,
-  MoreVertical,
-  Plus
+  MoreVertical
 } from 'lucide-react';
-
-interface BeforeInstallPromptEvent extends Event {
-  readonly platforms: string[];
-  readonly userChoice: Promise<{
-    outcome: 'accepted' | 'dismissed';
-    platform: string;
-  }>;
-  prompt(): Promise<void>;
-}
+import { usePWAInstall } from '../../hooks/usePWAInstall';
 
 interface PWAInstallPromptProps {
   forceOpen?: boolean;
   onClose?: () => void;
+  onInstalled?: () => void;
+  onRejected?: () => void;
 }
 
 export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
   forceOpen = false,
   onClose,
+  onInstalled,
+  onRejected,
 }) => {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const {
+    deferredPrompt,
+    isStandalone,
+    isInstalled,
+    isRejectedOrDismissed,
+    isIOS,
+    isPC,
+    isInIframe,
+    markInstalled,
+    markRejectedOrDismissed,
+  } = usePWAInstall();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isIOS, setIsIOS] = useState<boolean>(false);
-  const [isAndroid, setIsAndroid] = useState<boolean>(false);
-  const [isPC, setIsPC] = useState<boolean>(false);
-  const [isInIframe, setIsInIframe] = useState<boolean>(false);
-  const [isStandalone, setIsStandalone] = useState<boolean>(false);
   const [showInstructions, setShowInstructions] = useState<boolean>(false);
   const [installSuccess, setInstallSuccess] = useState<boolean>(false);
 
   useEffect(() => {
-    // Check if in iframe
-    const inIframe = window.self !== window.top;
-    setIsInIframe(inIframe);
-
-    // Check if running in standalone mode (already installed & launched)
-    const isStandaloneMode = 
-      window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone === true ||
-      document.referrer.includes('android-app://');
-    
-    setIsStandalone(isStandaloneMode);
-
-    if (isStandaloneMode) {
+    // If standalone or already installed or already rejected/dismissed, do not auto-open
+    if (isStandalone || isInstalled || isRejectedOrDismissed) {
       return;
     }
 
-    // Detect Platform
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent) && !(window as any).MSStream;
-    const isAndroidDevice = /android/.test(userAgent);
-    const isDesktopPC = !isIOSDevice && !isAndroidDevice;
-
-    setIsIOS(isIOSDevice);
-    setIsAndroid(isAndroidDevice);
-    setIsPC(isDesktopPC);
-
-    const previouslyInstalled = localStorage.getItem('inzu_pwa_installed') === 'true';
-
-    // Capture beforeinstallprompt event (Chrome, Edge, Android, Desktop Chrome/Edge)
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    // Listen for successful installation
-    const handleAppInstalled = () => {
-      setInstallSuccess(true);
-      localStorage.setItem('inzu_pwa_installed', 'true');
-      setTimeout(() => {
-        setIsOpen(false);
-        if (onClose) onClose();
-      }, 2500);
-    };
-
-    window.addEventListener('appinstalled', handleAppInstalled);
-
-    // First-time visitor prompt
+    // First-time visitor prompt check
     const hasSeenFirstPrompt = sessionStorage.getItem('inzu_session_install_shown');
 
-    if (!isStandaloneMode && !previouslyInstalled && !hasSeenFirstPrompt) {
+    if (!hasSeenFirstPrompt) {
       const timer = setTimeout(() => {
         setIsOpen(true);
         sessionStorage.setItem('inzu_session_install_shown', 'true');
-      }, 600);
+      }, 700);
       return () => clearTimeout(timer);
     }
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
-    };
-  }, [onClose]);
+  }, [isStandalone, isInstalled, isRejectedOrDismissed]);
 
   // Handle external open trigger (e.g. from Navbar "Install App" button)
   useEffect(() => {
@@ -126,19 +77,22 @@ export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
         const choiceResult = await deferredPrompt.userChoice;
         if (choiceResult.outcome === 'accepted') {
           setInstallSuccess(true);
-          localStorage.setItem('inzu_pwa_installed', 'true');
+          markInstalled();
+          if (onInstalled) onInstalled();
           setTimeout(() => {
             setIsOpen(false);
             if (onClose) onClose();
           }, 2000);
         } else {
-          localStorage.setItem('inzu_first_install_modal_dismissed', Date.now().toString());
+          // User rejected the browser native install prompt
+          markRejectedOrDismissed();
+          if (onRejected) onRejected();
+          setIsOpen(false);
+          if (onClose) onClose();
         }
       } catch (err) {
         console.error('Error invoking PWA install prompt:', err);
         setShowInstructions(true);
-      } finally {
-        setDeferredPrompt(null);
       }
     } else {
       // If browser doesn't offer programmatic prompt (e.g., in iframe, or already dismissed, or Safari/PC browser)
@@ -153,7 +107,8 @@ export const PWAInstallPrompt: React.FC<PWAInstallPromptProps> = ({
   const handleDismiss = () => {
     setIsOpen(false);
     setShowInstructions(false);
-    localStorage.setItem('inzu_first_install_modal_dismissed', Date.now().toString());
+    markRejectedOrDismissed();
+    if (onRejected) onRejected();
     if (onClose) onClose();
   };
 

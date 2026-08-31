@@ -13,6 +13,7 @@ import { Footer } from './components/layout/Footer';
 import { SEOHead } from './components/common/SEOHead';
 import { LoadingSplash } from './components/common/LoadingSplash';
 import { PWAInstallPrompt } from './components/common/PWAInstallPrompt';
+import { usePWAInstall } from './hooks/usePWAInstall';
 import { MessageCircle } from 'lucide-react';
 
 // Public & Client Components
@@ -42,6 +43,7 @@ type ViewMode = 'home' | 'properties' | 'property-details' | 'about' | 'contact'
 
 const MainApp: React.FC = () => {
   const { user, isAdmin } = useAuth();
+  const { showInstallButton } = usePWAInstall();
 
   // Navigation State
   const [currentView, setCurrentView] = useState<ViewMode>('home');
@@ -473,7 +475,7 @@ const MainApp: React.FC = () => {
         onNavigate={navigateTo}
         settings={settings}
         onOpenAuth={handleOpenAuth}
-        onOpenInstall={() => setIsInstallModalOpen(true)}
+        onOpenInstall={showInstallButton ? () => setIsInstallModalOpen(true) : undefined}
       />
 
       {/* View Router */}
@@ -575,13 +577,15 @@ const MainApp: React.FC = () => {
       <Footer
         settings={settings}
         onNavigate={navigateTo}
-        onOpenInstall={() => setIsInstallModalOpen(true)}
+        onOpenInstall={showInstallButton ? () => setIsInstallModalOpen(true) : undefined}
       />
 
       {/* PWA Install Notification for First-time & Returning Clients */}
       <PWAInstallPrompt
         forceOpen={isInstallModalOpen}
         onClose={() => setIsInstallModalOpen(false)}
+        onInstalled={() => setIsInstallModalOpen(false)}
+        onRejected={() => setIsInstallModalOpen(false)}
       />
     </div>
   );
