@@ -35,6 +35,7 @@ import { AdminReporting } from './components/admin/AdminReporting';
 import { AdminInquiries } from './components/admin/AdminInquiries';
 import { AdminReservations } from './components/admin/AdminReservations';
 import { AdminNotifications } from './components/admin/AdminNotifications';
+import { AdminProfile } from './components/admin/AdminProfile';
 import { AdminSettings } from './components/admin/AdminSettings';
 
 type ViewMode = 'home' | 'properties' | 'property-details' | 'about' | 'contact' | 'account' | 'admin';
@@ -374,6 +375,13 @@ const MainApp: React.FC = () => {
 
         {adminTab === 'notifications' && (
           <AdminNotifications
+            onNavigateTab={(tab) => setAdminTab(tab)}
+          />
+        )}
+
+        {adminTab === 'profile' && (
+          <AdminProfile
+            settings={settings}
             onNavigateTab={(tab) => setAdminTab(tab)}
           />
         )}

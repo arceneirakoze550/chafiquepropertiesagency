@@ -5,6 +5,9 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   updateProfile,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
   signOut as firebaseSignOut,
   type User
 } from 'firebase/auth';
@@ -20,6 +23,8 @@ interface AuthContextType {
   login: (email: string, pass: string) => Promise<UserProfile>;
   signUp: (fullName: string, email: string, pass: string) => Promise<UserProfile>;
   forgotPassword: (email: string) => Promise<void>;
+  updateUserProfile: (data: { displayName?: string; fullName?: string; phone?: string }) => Promise<void>;
+  updateUserPassword: (newPassword: string, currentPassword?: string) => Promise<void>;
   logout: () => Promise<void>;
   error: string | null;
   clearError: () => void;
@@ -385,6 +390,102 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateUserProfile = async (data: { displayName?: string; fullName?: string; phone?: string }): Promise<void> => {
+    setError(null);
+    const newName = (data.displayName || data.fullName || '').trim();
+    const newPhone = data.phone !== undefined ? data.phone.trim() : user?.phone;
+
+    if (!user) {
+      throw new Error('No user is currently signed in.');
+    }
+
+    try {
+      // 1. Update Firebase Auth Profile displayName if available
+      if (auth?.currentUser && newName) {
+        await updateProfile(auth.currentUser, {
+          displayName: newName,
+        });
+      }
+
+      // 2. Update Firestore `users/{uid}`
+      const targetUid = auth?.currentUser?.uid || user.uid;
+      if (db && targetUid) {
+        try {
+          const userDocRef = doc(db, 'users', targetUid);
+          await setDoc(userDocRef, {
+            name: newName || user.displayName || user.name || 'User',
+            fullName: newName || user.displayName || user.name || 'User',
+            displayName: newName || user.displayName || user.name || 'User',
+            phone: newPhone || '',
+            updatedAt: new Date().toISOString(),
+          }, { merge: true });
+        } catch (dbErr) {
+          console.warn('[AuthContext] Firestore user update error:', dbErr);
+        }
+      }
+
+      // 3. Update local session state
+      const updatedProfile: UserProfile = {
+        ...user,
+        displayName: newName || user.displayName,
+        name: newName || user.name,
+        phone: newPhone || user.phone,
+        updatedAt: new Date().toISOString(),
+      };
+
+      setUser(updatedProfile);
+      localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(updatedProfile));
+    } catch (err: any) {
+      console.error('[AuthContext] updateUserProfile error:', err);
+      const friendlyMsg = translateFirebaseError(err);
+      setError(friendlyMsg);
+      throw new Error(friendlyMsg);
+    }
+  };
+
+  const updateUserPassword = async (newPassword: string, currentPassword?: string): Promise<void> => {
+    setError(null);
+    if (!newPassword || newPassword.length < 6) {
+      const msg = 'New password must be at least 6 characters long.';
+      setError(msg);
+      throw new Error(msg);
+    }
+
+    if (!user) {
+      throw new Error('No user is currently signed in.');
+    }
+
+    if (auth?.currentUser) {
+      try {
+        // If current password provided, reauthenticate first for security
+        if (currentPassword && auth.currentUser.email) {
+          try {
+            const credential = EmailAuthProvider.credential(auth.currentUser.email, currentPassword);
+            await reauthenticateWithCredential(auth.currentUser, credential);
+          } catch (reauthErr: any) {
+            console.warn('[AuthContext] Reauthentication notice:', reauthErr);
+            if (reauthErr?.code === 'auth/wrong-password' || reauthErr?.code === 'auth/invalid-credential') {
+              throw new Error('Current password does not match. Please check your existing password.');
+            }
+          }
+        }
+
+        await updatePassword(auth.currentUser, newPassword);
+      } catch (err: any) {
+        console.error('[AuthContext] updateUserPassword error:', err);
+        if (err?.code === 'auth/requires-recent-login') {
+          throw new Error('For security, please enter your current password to verify your identity before setting a new password.');
+        }
+        const friendlyMsg = translateFirebaseError(err);
+        setError(friendlyMsg);
+        throw new Error(friendlyMsg);
+      }
+    } else {
+      // Mock/fallback local session
+      console.info('[AuthContext] Offline session password updated.');
+    }
+  };
+
   const logout = async () => {
     if (isFirebaseConfigured() && auth) {
       try {
@@ -412,6 +513,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         signUp,
         forgotPassword,
+        updateUserProfile,
+        updateUserPassword,
         logout,
         error,
         clearError,

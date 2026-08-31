@@ -23,6 +23,7 @@ import { getInquiries } from '../../services/inquiryService';
 import { getReservations } from '../../services/reservationService';
 import { formatPrice } from '../../lib/seo';
 import { getGeneralWhatsAppUrl, openWhatsApp } from '../../lib/whatsapp';
+import { UserProfileSettings } from '../profile/UserProfileSettings';
 
 interface ClientAccountViewProps {
   settings: SiteSettings;
@@ -346,53 +347,27 @@ export const ClientAccountView: React.FC<ClientAccountViewProps> = ({
 
       {/* Tab 4: Profile & Security */}
       {activeTab === 'profile' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">
-              Account Credentials
-            </h3>
-            <div className="space-y-3 text-xs">
-              <div>
-                <label className="text-slate-400 font-semibold block">Full Name</label>
-                <div className="font-bold text-slate-900 text-sm mt-0.5">
-                  {user?.displayName || user?.name || 'Client'}
-                </div>
-              </div>
-              <div>
-                <label className="text-slate-400 font-semibold block">Email Address</label>
-                <div className="font-bold text-slate-900 text-sm mt-0.5">
-                  {user?.email}
-                </div>
-              </div>
-              <div>
-                <label className="text-slate-400 font-semibold block">Role & Access</label>
-                <div className="inline-block mt-1 px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full font-bold uppercase text-[10px]">
-                  {user?.role === 'admin' ? 'Administrator' : 'Verified Client'}
-                </div>
-              </div>
-              <div>
-                <label className="text-slate-400 font-semibold block">UID</label>
-                <div className="text-[11px] font-mono text-slate-500 break-all mt-0.5">
-                  {user?.uid}
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="space-y-8">
+          <UserProfileSettings
+            variant="client"
+            title="My Client Profile & Credentials"
+            subtitle="Manage your registered name, phone number, and password for accessing saved properties and inquiries."
+          />
 
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 space-y-4">
             <h3 className="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">
-              Agency Concierge & Support
+              Agency Concierge & Support in Kigali
             </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              For priority assistance, custom real estate inquiries, or to list your own property in Kigali, speak directly with our broker.
+            <p className="text-xs text-slate-600 leading-relaxed max-w-3xl">
+              For priority assistance, custom property searches, or to list your house, villa, or plot in Kigali on Inzu Chafique Properties Agency, reach out directly to our broker.
             </p>
-            <div className="space-y-2 text-xs">
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                <span className="font-bold text-slate-900 block">Kigali Office Address:</span>
-                <span className="text-slate-600">{settings.address || 'Kicukiro, Kanombe, Kabeza at Gamabe Gas Trading House near Kabeza Modern Market'}, Kigali, Rwanda</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pt-1">
+              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
+                <span className="font-bold text-slate-900 block">Kigali Head Office:</span>
+                <span className="text-slate-600 leading-relaxed">{settings.address || 'Kicukiro, Kanombe, Kabeza at Gamabe Gas Trading House near Kabeza Modern Market'}, Kigali, Rwanda</span>
               </div>
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                <span className="font-bold text-slate-900 block">Direct Broker WhatsApp:</span>
+              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
+                <span className="font-bold text-slate-900 block">Direct Broker Line & WhatsApp:</span>
                 <span className="text-emerald-700 font-bold">{settings.whatsappNumber || '+250 788 348 201'}</span>
               </div>
             </div>

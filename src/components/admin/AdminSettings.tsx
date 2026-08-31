@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { Settings, Save, CheckCircle, RotateCcw, Building2, Phone, Mail, MapPin, Globe, MessageCircle } from 'lucide-react';
+import { Settings, Save, CheckCircle, RotateCcw, Building2, Phone, Mail, MapPin, Globe, MessageCircle, User, Shield } from 'lucide-react';
 import { SiteSettings } from '../../types';
 import { updateSiteSettings, DEFAULT_SETTINGS } from '../../services/settingsService';
+import { UserProfileSettings } from '../profile/UserProfileSettings';
 
 interface AdminSettingsProps {
   settings: SiteSettings;
   onUpdate: (updated: SiteSettings) => void;
+  initialTab?: 'agency' | 'profile';
 }
 
-export const AdminSettings: React.FC<AdminSettingsProps> = ({ settings, onUpdate }) => {
+export const AdminSettings: React.FC<AdminSettingsProps> = ({ settings, onUpdate, initialTab = 'agency' }) => {
+  const [activeTab, setActiveTab] = useState<'agency' | 'profile'>(initialTab);
   const [form, setForm] = useState<SiteSettings>(settings);
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
@@ -72,14 +75,51 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ settings, onUpdate
         </div>
       </div>
 
-      {savedSuccess && (
-        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex items-center gap-2">
-          <CheckCircle className="w-4 h-4 text-emerald-600" />
-          <span>All global settings and branding parameters successfully updated and synced!</span>
-        </div>
-      )}
+      {/* Settings Navigation Tabs */}
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-px">
+        <button
+          type="button"
+          onClick={() => setActiveTab('agency')}
+          className={`flex items-center gap-2 py-3 px-4 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
+            activeTab === 'agency'
+              ? 'border-indigo-600 text-indigo-700'
+              : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300'
+          }`}
+        >
+          <Building2 className="w-4 h-4" />
+          <span>Agency Branding & Contacts</span>
+        </button>
 
-      <form onSubmit={handleSave} className="space-y-6">
+        <button
+          type="button"
+          onClick={() => setActiveTab('profile')}
+          className={`flex items-center gap-2 py-3 px-4 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
+            activeTab === 'profile'
+              ? 'border-indigo-600 text-indigo-700'
+              : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300'
+          }`}
+        >
+          <User className="w-4 h-4" />
+          <span>My Admin Profile & Password</span>
+        </button>
+      </div>
+
+      {activeTab === 'profile' ? (
+        <UserProfileSettings
+          variant="admin"
+          title="Administrator Information & Password"
+          subtitle="Update your admin display name, contact phone number, and change your Firebase login password."
+        />
+      ) : (
+        <>
+          {savedSuccess && (
+            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-emerald-600" />
+              <span>All global settings and branding parameters successfully updated and synced!</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSave} className="space-y-6">
         {/* Card 1: Corporate Identity & Contacts */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-2xs">
           <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
@@ -281,6 +321,8 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ settings, onUpdate
           </button>
         </div>
       </form>
+      </>
+      )}
     </div>
   );
 };

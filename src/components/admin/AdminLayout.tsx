@@ -12,14 +12,15 @@ import {
   Shield,
   Menu,
   X,
-  FileText
+  FileText,
+  User
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { getNotifications, markNotificationAsRead } from '../../services/notificationService';
 import { AppNotification, SiteSettings } from '../../types';
 import { BrandLogo } from '../common/BrandLogo';
 
-export type AdminTab = 'dashboard' | 'properties' | 'new-property' | 'reports' | 'inquiries' | 'reservations' | 'notifications' | 'settings';
+export type AdminTab = 'dashboard' | 'properties' | 'new-property' | 'reports' | 'inquiries' | 'reservations' | 'notifications' | 'profile' | 'settings';
 
 interface AdminLayoutProps {
   currentTab: AdminTab;
@@ -72,6 +73,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
     { id: 'inquiries', label: 'Client Inquiries', icon: MessageSquare },
     { id: 'reservations', label: 'Viewing Bookings', icon: Calendar },
     { id: 'notifications', label: 'Notification Logs', icon: Bell, badge: unreadCount },
+    { id: 'profile', label: 'Admin Profile & Pass', icon: User },
     { id: 'settings', label: 'Agency Settings', icon: Settings },
   ];
 
@@ -121,15 +123,23 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
 
         {/* User Info & Return to Website */}
         <div className="p-4 border-t border-slate-800 space-y-2 text-xs">
-          <div className="flex items-center gap-2.5 px-3 py-2 bg-slate-800/60 rounded-xl text-slate-300">
-            <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px]">
+          <button
+            onClick={() => onSelectTab('profile')}
+            className={`w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-xl transition-colors cursor-pointer ${
+              currentTab === 'profile'
+                ? 'bg-emerald-600/30 border border-emerald-500/50 text-white'
+                : 'bg-slate-800/60 hover:bg-slate-800 text-slate-300'
+            }`}
+            title="Edit Admin Profile & Password"
+          >
+            <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">
               {user?.displayName?.charAt(0) || 'C'}
             </div>
             <div className="truncate flex-1">
               <p className="font-semibold text-white truncate text-[11px]">{user?.displayName || 'Chafique Administrator'}</p>
               <p className="text-[10px] text-slate-400 truncate">{user?.email || 'chafiquentuye@gmail.com'}</p>
             </div>
-          </div>
+          </button>
 
           <button
             onClick={onExitAdmin}
