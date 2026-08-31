@@ -87,7 +87,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     .filter((p) => p.id !== property.id && (p.propertyType === property.propertyType || p.district === property.district))
     .slice(0, 3);
 
-  const baseDomain = settings?.siteUrl || 'https://chafiquepropertiesagency.vercel.app';
+  const baseDomain = settings?.siteUrl || 'https://inzuchafiquepropertiesagency.netlify.app';
   const breadcrumbs = [
     { name: 'Home', url: `${baseDomain}/` },
     { name: 'Properties in Kigali', url: `${baseDomain}/properties` },

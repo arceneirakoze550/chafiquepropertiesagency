@@ -2,51 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Core Static Landing & Directory Pages -->
   <url>
-    <loc>https://chafiquepropertiesagency.vercel.app/</loc>
+    <loc>https://inzuchafiquepropertiesagency.netlify.app/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://chafiquepropertiesagency.vercel.app/properties</loc>
+    <loc>https://inzuchafiquepropertiesagency.netlify.app/properties</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://chafiquepropertiesagency.vercel.app/contact</loc>
+    <loc>https://inzuchafiquepropertiesagency.netlify.app/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://inzuchafiquepropertiesagency.netlify.app/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Seeded / High-Priority Verified Kigali Property Listings -->
   <url>
-    <loc>https://chafiquepropertiesagency.vercel.app/property/luxury-villa-nyarutarama-golf-estate</loc>
+    <loc>https://inzuchafiquepropertiesagency.netlify.app/property/luxury-villa-nyarutarama-golf-estate</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chafiquepropertiesagency.vercel.app/property/modern-family-home-kibagabaga-sunset-view</loc>
+    <loc>https://inzuchafiquepropertiesagency.netlify.app/property/modern-family-home-kibagabaga-sunset-view</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chafiquepropertiesagency.vercel.app/property/executive-diplomatic-residence-kiyovu</loc>
+    <loc>https://inzuchafiquepropertiesagency.netlify.app/property/executive-diplomatic-residence-kiyovu</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chafiquepropertiesagency.vercel.app/property/prime-residential-land-rebero-kicukiro</loc>
+    <loc>https://inzuchafiquepropertiesagency.netlify.app/property/prime-residential-land-rebero-kicukiro</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chafiquepropertiesagency.vercel.app/property/furnished-luxury-penthouse-gacuriro-vision-city</loc>
+    <loc>https://inzuchafiquepropertiesagency.netlify.app/property/furnished-luxury-penthouse-gacuriro-vision-city</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chafiquepropertiesagency.vercel.app/property/commercial-office-building-cbd-nyarugenge</loc>
+    <loc>https://inzuchafiquepropertiesagency.netlify.app/property/commercial-office-building-cbd-nyarugenge</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 </urlset>
-

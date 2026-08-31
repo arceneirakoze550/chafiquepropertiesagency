@@ -1,6 +1,6 @@
 import { Property, SiteSettings } from '../types';
 
-export const DEFAULT_CANONICAL_DOMAIN = 'https://chafiquepropertiesagency.vercel.app';
+export const DEFAULT_CANONICAL_DOMAIN = 'https://inzuchafiquepropertiesagency.netlify.app';
 
 export interface SEOProps {
   title?: string;

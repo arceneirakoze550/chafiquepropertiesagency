@@ -5,6 +5,6 @@ Disallow: /account
 Disallow: /api/
 
 # Host & Sitemap specification
-Host: https://chafiquepropertiesagency.vercel.app
-Sitemap: https://chafiquepropertiesagency.vercel.app/sitemap.xml
+Host: https://inzuchafiquepropertiesagency.netlify.app
+Sitemap: https://inzuchafiquepropertiesagency.netlify.app/sitemap.xml
 

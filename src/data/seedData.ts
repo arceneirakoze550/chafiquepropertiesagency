@@ -23,7 +23,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
     twitter: 'https://twitter.com',
     youtube: 'https://youtube.com',
   },
-  siteUrl: typeof window !== 'undefined' ? window.location.origin : 'https://chafiquepropertiesagency.vercel.app',
+  siteUrl: typeof window !== 'undefined' ? window.location.origin : 'https://inzuchafiquepropertiesagency.netlify.app',
   updatedAt: new Date().toISOString(),
 };
 

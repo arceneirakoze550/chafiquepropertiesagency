@@ -386,7 +386,7 @@ const MainApp: React.FC = () => {
   }
 
   // --- PUBLIC & CLIENT PORTAL VIEWS ---
-  const baseDomain = settings?.siteUrl || 'https://chafiquepropertiesagency.vercel.app';
+  const baseDomain = settings?.siteUrl || 'https://inzuchafiquepropertiesagency.netlify.app';
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col selection:bg-emerald-500 selection:text-white">
