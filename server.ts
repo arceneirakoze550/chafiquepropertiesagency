@@ -164,7 +164,7 @@ async function startServer() {
 
   // Dynamic Sitemap generator API
   app.get('/sitemap.xml', (req, res) => {
-    const siteUrl = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://chafiquepropertiesagency.vercel.app').replace(/\/$/, '');
+    const siteUrl = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://inzuchafiquepropertiesagency.netlify.app').replace(/\/$/, '');
     
     // Core property slugs for search indexing
     const propertySlugs = [
@@ -201,6 +201,11 @@ async function startServer() {
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>${siteUrl}/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 ${propertyEntries}
 </urlset>`;
 
@@ -210,7 +215,7 @@ ${propertyEntries}
 
   // Robots.txt
   app.get('/robots.txt', (req, res) => {
-    const siteUrl = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://chafiquepropertiesagency.vercel.app').replace(/\/$/, '');
+    const siteUrl = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://inzuchafiquepropertiesagency.netlify.app').replace(/\/$/, '');
     res.header('Content-Type', 'text/plain; charset=utf-8');
     res.send(`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /account\nDisallow: /api/\n\nHost: ${siteUrl}\nSitemap: ${siteUrl}/sitemap.xml\n`);
   });

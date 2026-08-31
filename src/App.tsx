@@ -58,6 +58,9 @@ const MainApp: React.FC = () => {
     mode: 'login',
   });
 
+  // App Install Modal State
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
+
   // App Data
   const [properties, setProperties] = useState<Property[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
@@ -462,6 +465,7 @@ const MainApp: React.FC = () => {
         onNavigate={navigateTo}
         settings={settings}
         onOpenAuth={handleOpenAuth}
+        onOpenInstall={() => setIsInstallModalOpen(true)}
       />
 
       {/* View Router */}
@@ -563,10 +567,14 @@ const MainApp: React.FC = () => {
       <Footer
         settings={settings}
         onNavigate={navigateTo}
+        onOpenInstall={() => setIsInstallModalOpen(true)}
       />
 
       {/* PWA Install Notification for First-time & Returning Clients */}
-      <PWAInstallPrompt />
+      <PWAInstallPrompt
+        forceOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+      />
     </div>
   );
 };

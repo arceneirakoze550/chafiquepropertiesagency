@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react';
+import { Building2, Mail, Phone, MapPin, Send, MessageCircle, Download } from 'lucide-react';
 import { SiteSettings } from '../../types';
 import { BrandLogo } from '../common/BrandLogo';
 import { getGeneralWhatsAppUrl, openWhatsApp } from '../../lib/whatsapp';
@@ -7,9 +7,10 @@ import { getGeneralWhatsAppUrl, openWhatsApp } from '../../lib/whatsapp';
 interface FooterProps {
   settings: SiteSettings;
   onNavigate: (view: string, data?: any) => void;
+  onOpenInstall?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ settings, onNavigate }) => {
+export const Footer: React.FC<FooterProps> = ({ settings, onNavigate, onOpenInstall }) => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -213,7 +214,7 @@ export const Footer: React.FC<FooterProps> = ({ settings, onNavigate }) => {
         <div className="pt-8 space-y-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
             <p>© {new Date().getFullYear()} {settings.companyName || 'Inzu Chafique Properties Agency'}. All Rights Reserved. Verified Real Estate Brokerage in Kigali, Rwanda.</p>
-            <div className="flex items-center gap-6 text-slate-400">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-slate-400">
               <button onClick={() => onNavigate('home')} className="hover:text-emerald-400 transition-colors cursor-pointer">
                 Home
               </button>
@@ -226,6 +227,15 @@ export const Footer: React.FC<FooterProps> = ({ settings, onNavigate }) => {
               <button onClick={() => onNavigate('contact')} className="hover:text-emerald-400 transition-colors cursor-pointer">
                 Contact & Location
               </button>
+              {onOpenInstall && (
+                <button 
+                  onClick={onOpenInstall} 
+                  className="inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 font-semibold transition-colors cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Install App</span>
+                </button>
+              )}
             </div>
           </div>
 

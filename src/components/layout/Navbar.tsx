@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, Shield, Menu, X, Phone, MessageCircle, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { Building2, Shield, Menu, X, Phone, MessageCircle, User, LogOut, LayoutDashboard, Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { SiteSettings } from '../../types';
 import { BrandLogo } from '../common/BrandLogo';
@@ -10,6 +10,7 @@ interface NavbarProps {
   currentView: string;
   onNavigate: (view: string, data?: any) => void;
   onOpenAuth: (mode?: 'login' | 'signup' | 'forgot-password') => void;
+  onOpenInstall?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -17,6 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentView,
   onNavigate,
   onOpenAuth,
+  onOpenInstall,
 }) => {
   const { user, isAdmin, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -143,8 +145,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          {/* Right actions: Auth Controls */}
+          {/* Right actions: Auth Controls & App Install */}
           <div className="hidden md:flex items-center gap-2.5">
+            {onOpenInstall && (
+              <button
+                onClick={onOpenInstall}
+                className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100/80 rounded-xl transition-all border border-emerald-200/80 cursor-pointer shadow-2xs"
+                title="Install Inzu Chafique App"
+              >
+                <Download className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Install App</span>
+              </button>
+            )}
+
             {user ? (
               <div className="flex items-center gap-2">
                 {isAdmin ? (
@@ -247,6 +260,19 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
+            {onOpenInstall && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenInstall();
+                }}
+                className="w-full py-2.5 bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold rounded-lg flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              >
+                <Download className="w-4 h-4 text-emerald-600" />
+                <span>Install Inzu Chafique App</span>
+              </button>
+            )}
+
             <button
               onClick={handleWhatsApp}
               className="w-full py-2.5 bg-emerald-600 text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-2 cursor-pointer"
